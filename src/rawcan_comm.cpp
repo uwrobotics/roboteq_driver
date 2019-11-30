@@ -14,7 +14,7 @@
 #include <string>
 #include <iostream>
 
-#include "roboteq_controller/rawcan_comm.hpp"
+#include "rawcan_comm.hpp"
 
 namespace roboteq { 
 

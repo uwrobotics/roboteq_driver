@@ -3,10 +3,13 @@ project(roboteq_driver)
 
 set(CMAKE_CXX_STANDARD 14)
 
-#inlcuding header files
 include_directories(include)
 
-#manually adding sources
-file(GLOB SOURCES "src/*.cpp")
+add_library(${PROJECT_NAME}
+            src/rawcan_comm.cpp
+            src/roboteq_controller.cpp)
 
-add_executable(roboteq_driver ${SOURCES})
+add_executable(roboteq_driver_example_main
+               src/example_main.cpp)
+target_link_libraries(roboteq_driver_example_main 
+                      ${PROJECT_NAME})

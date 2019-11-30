@@ -1,4 +1,3 @@
-
 namespace roboteq {
 
 void roboteq_controller::roboteq_controller(std::unique_ptr<i_comm> &&comm) : _comm(comm){
