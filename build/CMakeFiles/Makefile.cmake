@@ -43,4 +43,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/roboteq_driver.dir/DependInfo.cmake"
+  "CMakeFiles/roboteq_driver_example_main.dir/DependInfo.cmake"
   )

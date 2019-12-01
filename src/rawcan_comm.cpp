@@ -13,12 +13,13 @@
 
 #include <string>
 #include <iostream>
+#include <cstring>
 
 #include "rawcan_comm.hpp"
 
 namespace roboteq { 
 
-    void rawcan_comm::rawcan_comm(canid_t roboteq_can_id = 1, std::string ifname = "can0"): _roboteq_can_id(roboteq_can_id){
+    rawcan_comm::rawcan_comm(canid_t roboteq_can_id = 1, std::string ifname = "can0"): _roboteq_can_id(roboteq_can_id) {
 
         if((_socket_handle = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0) {
             printf("Error while opening socket");
@@ -27,7 +28,8 @@ namespace roboteq {
 
         struct ifreq ifr;
 
-        strcpy(ifr.ifr_name, ifname);
+        std::strcpy(ifr.ifr_name, ifname.c_str);
+        // ifname.c_str(ifr.ifr_name);
         ioctl(_socket_handle, SIOCGIFINDEX, &ifr);
 
         struct sockaddr_can addr;

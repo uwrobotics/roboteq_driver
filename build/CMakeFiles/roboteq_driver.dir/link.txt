@@ -1,1 +1,2 @@
-/usr/bin/c++    -rdynamic CMakeFiles/roboteq_driver.dir/src/rawcan_comm.cpp.o CMakeFiles/roboteq_driver.dir/src/roboteq_controller.cpp.o CMakeFiles/roboteq_driver.dir/src/test.cpp.o  -o roboteq_driver 
+/usr/bin/ar qc libroboteq_driver.a  CMakeFiles/roboteq_driver.dir/src/rawcan_comm.cpp.o CMakeFiles/roboteq_driver.dir/src/roboteq_controller.cpp.o
+/usr/bin/ranlib libroboteq_driver.a

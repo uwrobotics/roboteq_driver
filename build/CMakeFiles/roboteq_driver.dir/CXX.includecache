@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+../include/i_comm.hpp
+
+../include/rawcan_comm.hpp
+linux/can.h
+-
+i_comm.hpp
+../include/i_comm.hpp
+
+../include/roboteq_controller.hpp
+memory
+-
+i_comm.hpp
+../include/i_comm.hpp
+
 /home/akeaveny/cpp/roboteq_driver/src/rawcan_comm.cpp
 stdio.h
 -
@@ -31,12 +45,16 @@ string
 -
 iostream
 -
-roboteq_controller/rawcan_comm.hpp
-/home/akeaveny/cpp/roboteq_driver/src/roboteq_controller/rawcan_comm.hpp
+cstring
+-
+rawcan_comm.hpp
+/home/akeaveny/cpp/roboteq_driver/src/rawcan_comm.hpp
 
 /home/akeaveny/cpp/roboteq_driver/src/roboteq_controller.cpp
-
-/home/akeaveny/cpp/roboteq_driver/src/test.cpp
 memory
 -
+roboteq_controller.hpp
+/home/akeaveny/cpp/roboteq_driver/src/roboteq_controller.hpp
+i_comm.hpp
+/home/akeaveny/cpp/roboteq_driver/src/i_comm.hpp
 

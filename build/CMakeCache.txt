@@ -184,6 +184,9 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //Value Computed by CMake
 roboteq_driver_BINARY_DIR:STATIC=/home/akeaveny/cpp/roboteq_driver/build
 
+//Dependencies for target
+roboteq_driver_LIB_DEPENDS:STATIC=
+
 //Value Computed by CMake
 roboteq_driver_SOURCE_DIR:STATIC=/home/akeaveny/cpp/roboteq_driver
 

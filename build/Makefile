@@ -123,6 +123,46 @@ roboteq_driver/fast:
 	$(MAKE) -f CMakeFiles/roboteq_driver.dir/build.make CMakeFiles/roboteq_driver.dir/build
 .PHONY : roboteq_driver/fast
 
+#=============================================================================
+# Target rules for targets named roboteq_driver_example_main
+
+# Build rule for target.
+roboteq_driver_example_main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboteq_driver_example_main
+.PHONY : roboteq_driver_example_main
+
+# fast build rule for target.
+roboteq_driver_example_main/fast:
+	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/build
+.PHONY : roboteq_driver_example_main/fast
+
+src/example_main.o: src/example_main.cpp.o
+
+.PHONY : src/example_main.o
+
+# target to build an object file
+src/example_main.cpp.o:
+	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.o
+.PHONY : src/example_main.cpp.o
+
+src/example_main.i: src/example_main.cpp.i
+
+.PHONY : src/example_main.i
+
+# target to preprocess a source file
+src/example_main.cpp.i:
+	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.i
+.PHONY : src/example_main.cpp.i
+
+src/example_main.s: src/example_main.cpp.s
+
+.PHONY : src/example_main.s
+
+# target to generate assembly for a file
+src/example_main.cpp.s:
+	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.s
+.PHONY : src/example_main.cpp.s
+
 src/rawcan_comm.o: src/rawcan_comm.cpp.o
 
 .PHONY : src/rawcan_comm.o
@@ -177,33 +217,6 @@ src/roboteq_controller.cpp.s:
 	$(MAKE) -f CMakeFiles/roboteq_driver.dir/build.make CMakeFiles/roboteq_driver.dir/src/roboteq_controller.cpp.s
 .PHONY : src/roboteq_controller.cpp.s
 
-src/test.o: src/test.cpp.o
-
-.PHONY : src/test.o
-
-# target to build an object file
-src/test.cpp.o:
-	$(MAKE) -f CMakeFiles/roboteq_driver.dir/build.make CMakeFiles/roboteq_driver.dir/src/test.cpp.o
-.PHONY : src/test.cpp.o
-
-src/test.i: src/test.cpp.i
-
-.PHONY : src/test.i
-
-# target to preprocess a source file
-src/test.cpp.i:
-	$(MAKE) -f CMakeFiles/roboteq_driver.dir/build.make CMakeFiles/roboteq_driver.dir/src/test.cpp.i
-.PHONY : src/test.cpp.i
-
-src/test.s: src/test.cpp.s
-
-.PHONY : src/test.s
-
-# target to generate assembly for a file
-src/test.cpp.s:
-	$(MAKE) -f CMakeFiles/roboteq_driver.dir/build.make CMakeFiles/roboteq_driver.dir/src/test.cpp.s
-.PHONY : src/test.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -211,17 +224,18 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... roboteq_driver"
 	@echo "... edit_cache"
+	@echo "... roboteq_driver"
+	@echo "... roboteq_driver_example_main"
+	@echo "... src/example_main.o"
+	@echo "... src/example_main.i"
+	@echo "... src/example_main.s"
 	@echo "... src/rawcan_comm.o"
 	@echo "... src/rawcan_comm.i"
 	@echo "... src/rawcan_comm.s"
 	@echo "... src/roboteq_controller.o"
 	@echo "... src/roboteq_controller.i"
 	@echo "... src/roboteq_controller.s"
-	@echo "... src/test.o"
-	@echo "... src/test.i"
-	@echo "... src/test.s"
 .PHONY : help
 
 
