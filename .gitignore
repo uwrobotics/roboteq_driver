@@ -23,3 +23,6 @@
 *.exe
 *.out
 *.app
+
+# Don't track content of these folders
+build/
