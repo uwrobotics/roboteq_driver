@@ -9,8 +9,8 @@ namespace roboteq {
     class roboteq_controller {
 
         public :
-        
         explicit roboteq_controller(std::unique_ptr<i_comm> &&comm);
+        roboteq_controller & operator= ( const roboteq_controller& ) = delete;
         ~roboteq_controller(){}
 
         // set methods
@@ -79,8 +79,6 @@ namespace roboteq {
 
         private :
         std::unique_ptr<i_comm> _comm;
-
-
 
     };
 

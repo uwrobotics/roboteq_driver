@@ -1,5 +1,3 @@
-#pragma once
-
 
 namespace roboteq { 
 
@@ -72,7 +70,6 @@ namespace roboteq {
         int16_t ReadAnalogInputsConverted(uint8_t _input) override;
         int16_t ReadPulseInputs(uint8_t _input) override;
         int16_t ReadPulseInputsConverted(uint8_t _input) override;
-
 
     } 
 

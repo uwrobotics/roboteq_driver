@@ -80,8 +80,6 @@ namespace roboteq {
         int _roboteq_can_id;
         int _socket_handle;
 
-
-
     };
 
 } // namespace roboteq
