@@ -19,7 +19,12 @@
 
 namespace roboteq { 
 
-    rawcan_comm::rawcan_comm(canid_t roboteq_can_id = 0x1, std::string ifname = "can0"): _roboteq_can_id(roboteq_can_id) {
+    const std::unordered_map<runtime_command, uint16_t> rawcan_comm::runtime_command_map = { 
+        {runtime_command::SET_MOTOR_COMMAND, 0x2000}, 
+        {runtime_command::SET_POSITION, 0x2001}, 
+        {runtime_command::SET_VELOCITY, 0x2002} } ;
+
+    rawcan_comm::rawcan_comm(canid_t roboteq_can_id, std::string ifname): _roboteq_can_id(roboteq_can_id) {
 
         if((_socket_handle = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0) {
             printf("Error while opening socket");
@@ -42,6 +47,7 @@ namespace roboteq {
             printf("Error in socket bind");
             throw -2;
         }
+        
 
     } 
 
