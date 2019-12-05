@@ -47,7 +47,6 @@ namespace roboteq {
             printf("Error in socket bind");
             throw -2;
         }
-        
 
     } 
 

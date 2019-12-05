@@ -9,10 +9,4 @@ namespace roboteq {
 
     }
 
-    // // set methods
-    // void roboteq_controller::SetParameters(int16_t velocity, long accel, long decel, uint8_t channel) {
-
-    //     _comm->SetParameters(velocity, accel, decel, channel);
-    // }
-
 } // namespace roboteq

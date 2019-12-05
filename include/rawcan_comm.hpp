@@ -15,7 +15,6 @@ namespace roboteq {
         explicit rawcan_comm(canid_t roboteq_can_id = 0x1, std::string ifname = "can0");
         ~rawcan_comm(){}
 
-        // int Send_Initiate_SDO_Download(short index, short subindex, long data);
         bool write(runtime_command command, uint8_t argument1, uint32_t argument2) override;
         uint32_t read(runtime_query command, uint8_t argument1) override;
 
