@@ -25,8 +25,8 @@ namespace roboteq {
         i_comm(){};
         virtual ~i_comm(){}
 
-        virtual bool write(runtime_command command, uint8_t argument1, uint32_t argument2)=0;
-        virtual uint32_t read(runtime_query command, uint8_t argument1)=0;
+        virtual bool download(runtime_command command, uint8_t argument1, uint32_t argument2)=0;
+        virtual uint32_t upload(runtime_query command, uint8_t argument1)=0;
                 
         private :
 
