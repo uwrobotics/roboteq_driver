@@ -10,6 +10,7 @@ namespace roboteq {
 
         public :
         explicit roboteq_controller(std::unique_ptr<i_comm> &&comm);
+        roboteq_controller ( const roboteq_controller & ) = delete;
         roboteq_controller & operator= ( const roboteq_controller& ) = delete;
         ~roboteq_controller(){}
 
