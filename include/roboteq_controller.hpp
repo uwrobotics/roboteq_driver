@@ -19,7 +19,7 @@ namespace roboteq {
         void SetPosition(long position, uint8_t channel);	
 
         void SetVelocity(uint16_t speed, uint8_t channel){
-            _comm->download(roboteq::runtime_command::SET_VELOCITY, speed, channel);
+            _comm->download(roboteq::send_runtime_command::SET_VELOCITY, speed, channel);
         };
         	
         void SetEncoderCounter(long counter, uint8_t channel);	
