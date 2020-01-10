@@ -12,7 +12,7 @@ namespace roboteq {
 
         public:
         
-        explicit rawcan_comm(canid_t roboteq_can_id = 0x1, std::string ifname = "can0");
+        explicit rawcan_comm(canid_t roboteq_can_id = 0x1, std::string ifname = "vcan0");
         ~rawcan_comm(){}
 
         bool download(send_runtime_command command, uint8_t subindex, uint32_t data) override;
