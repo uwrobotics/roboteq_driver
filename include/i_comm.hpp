@@ -26,7 +26,6 @@ namespace roboteq {
         SET_NEXT_VELOCITY,
         SET_USER_BOOL_VARIABLE,
         SAVE_CONFIG_TO_FLASH,
-
     };
 
     enum class send_runtime_query {

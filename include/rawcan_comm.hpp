@@ -7,7 +7,12 @@
 
 
 namespace roboteq { 
-
+    
+     typedef struct command_properties {
+        int canopen_index;
+        int number_of_data_bytes;
+        } command_properties_t;
+    
     class rawcan_comm : public i_comm {
 
         public:
@@ -22,9 +27,11 @@ namespace roboteq {
         int _roboteq_can_id;
         int _socket_handle;
         uint32_t _nbytes;
-        const uint16_t sdo_cob_id_offset = 0x600;
-        static const std::unordered_map<send_runtime_command, uint16_t> _runtime_command_map;
-        static const std::unordered_map<send_runtime_query, uint16_t> _runtime_query_map;
+        const uint16_t _sdo_command = 0x20;
+        const uint16_t _sdo_query = 0x40;
+        const uint16_t _sdo_cob_id_offset = 0x1;
+        static const std::unordered_map<send_runtime_command, command_properties_t> _runtime_command_map;
+        static const std::unordered_map<send_runtime_query, command_properties_t> _runtime_query_map;
     };
 
 } // namespace roboteq

@@ -17,74 +17,74 @@
 
 #include "rawcan_comm.hpp"
 
-namespace roboteq { 
+namespace roboteq {  
 
-    const std::unordered_map<send_runtime_command, uint16_t> rawcan_comm::_runtime_command_map = { 
+    const std::unordered_map<send_runtime_command, command_properties_t> rawcan_comm::_runtime_command_map = { 
   
-        {send_runtime_command::SET_POSITION, 0x2001}, 
-        {send_runtime_command::SET_VELOCITY, 0x2002},
-        {send_runtime_command::SET_ENCODER_COUNTER, 0x2003},
-        {send_runtime_command::SET_BRUSHLESS_COUNTER, 0x2004},
-        {send_runtime_command::SET_USER_INT_VARIABLE, 0x2005},
-        {send_runtime_command::SET_ACCELERATION, 0x2006},
-        {send_runtime_command::SET_DECELERATION, 0x2007},
-        {send_runtime_command::SET_ALL_DIGITAL_OUT_BITS, 0x2008},
-        {send_runtime_command::SET_INDIVIDUAL_DIGITAL_OUT_BITS, 0x2009},
-        {send_runtime_command::RESET_INDIVIDUAL_OUT_BITS, 0x200a},
-        {send_runtime_command::LOAD_HOME_COUNTER, 0x200b},
-        {send_runtime_command::EMERGENCY_SHUTDOWN, 0x200c},
-        {send_runtime_command::RELEASE_SHUTDOWN, 0x200d},
-        {send_runtime_command::STOP_IN_ALL_MODES, 0x200e},
-        {send_runtime_command::SET_POS_RELATIVE, 0x200f},
-        {send_runtime_command::SET_NEXT_POS_ABSOLUTE, 0x2010},
-        {send_runtime_command::SET_NEXT_POS_RELATIVE, 0x2011},
-        {send_runtime_command::SET_NEXT_ACCELERATION, 0x2012},
-        {send_runtime_command::SET_NEXT_DECELERATION, 0x2013},
-        {send_runtime_command::SET_NEXT_VELOCITY, 0x20014},
-        {send_runtime_command::SET_USER_BOOL_VARIABLE, 0x2015},
-        {send_runtime_command::SAVE_CONFIG_TO_FLASH, 0x2017},
+        {send_runtime_command::SET_POSITION, {0x2001, 0x0}}, 
+        {send_runtime_command::SET_VELOCITY, {0x2002, 0x2}},
+        {send_runtime_command::SET_ENCODER_COUNTER, {0x2003, 0x0}},
+        {send_runtime_command::SET_BRUSHLESS_COUNTER, {0x2004, 0x0}},
+        {send_runtime_command::SET_USER_INT_VARIABLE, {0x2005, 0x0}},
+        {send_runtime_command::SET_ACCELERATION, {0x2006, 0x0}},
+        {send_runtime_command::SET_DECELERATION, {0x2007, 0x0}},
+        {send_runtime_command::SET_ALL_DIGITAL_OUT_BITS, {0x2008, 0x3}},
+        {send_runtime_command::SET_INDIVIDUAL_DIGITAL_OUT_BITS, {0x2009, 0x3}},
+        {send_runtime_command::RESET_INDIVIDUAL_OUT_BITS, {0x200a, 0x3}},
+        {send_runtime_command::LOAD_HOME_COUNTER, {0x200b, 0x3}},
+        {send_runtime_command::EMERGENCY_SHUTDOWN, {0x200c, 0x3}},
+        {send_runtime_command::RELEASE_SHUTDOWN, {0x200d, 0x3}},
+        {send_runtime_command::STOP_IN_ALL_MODES, {0x200e, 0x3}},
+        {send_runtime_command::SET_POS_RELATIVE, {0x200f, 0x0}},
+        {send_runtime_command::SET_NEXT_POS_ABSOLUTE, {0x2010, 0x0}},
+        {send_runtime_command::SET_NEXT_POS_RELATIVE, {0x2011, 0x0}},
+        {send_runtime_command::SET_NEXT_ACCELERATION, {0x2012, 0x0}},
+        {send_runtime_command::SET_NEXT_DECELERATION, {0x2013, 0x0}},
+        {send_runtime_command::SET_NEXT_VELOCITY, {0x2014, 0x2}},
+        {send_runtime_command::SET_USER_BOOL_VARIABLE, {0x2015, 0x0}},
+        {send_runtime_command::SAVE_CONFIG_TO_FLASH, {0x2017, 0x4}},
     };
 
-    const std::unordered_map<send_runtime_query, uint16_t> rawcan_comm::_runtime_query_map = { 
-        {send_runtime_query::READ_MOTOR_AMPS, 0x2100}, 
-        {send_runtime_query::READ_ACTUAL_MOTOR_COMMAND, 0x2101}, 
-        {send_runtime_query::READ_ACTUAL_POWER_LEVEL, 0x2102}, 
-        {send_runtime_query::READ_ENCODER_MOTOR_SPEED, 0x2103}, 
-        {send_runtime_query::READ_ABSOLUTE_ENCODER_COUNT, 0x2104}, 
-        {send_runtime_query::READ_ABSOLUTE_BRUSHLESS_COUNTER, 0x2105}, 
-        {send_runtime_query::READ_USER_INTEGER_VARIABLE, 0x2106}, 
-        {send_runtime_query::READ_ENCODER_MOTOR_SPEED_RELATIVE_TO_MAX_SPEED, 0x2107}, 
-        {send_runtime_query::READ_ENCODER_COUNT_RELATIVE, 0x2108}, 
-        {send_runtime_query::READ_BRUSHLESS_COUNT_RELATIVE, 0x2109},
-        {send_runtime_query::READ_BRUSHLESS_MOTOR_SPEED, 0x210a}, 
-        {send_runtime_query::READ_BRUSHLESS_MOTOR_SPEED_RELATIVE_TO_MAX_SPEED, 0x210b}, 
-        {send_runtime_query::READ_BATTERY_AMPS, 0x210c}, 
-        {send_runtime_query::READ_INTERNAL_VOLTAGES, 0x210d}, 
-        {send_runtime_query::READ_ALL_DIGITAL_INPUTS, 0x210e}, 
-        {send_runtime_query::READ_CASE_AND_INTERNAL_TEMPERATURES, 0x210f}, 
-        {send_runtime_query::READ_FEEDBACK, 0x2110},
-        {send_runtime_query::READ_STATUS_FLAGS, 0x211}, 
-        {send_runtime_query::READ_FAULT_FLAGS, 0x2112}, 
-        {send_runtime_query::READ_CURRENT_DIGITAL_OUTPUTS, 0x2113}, 
-        {send_runtime_query::READ_CLOSED_LOOP_ERROR, 0x2114}, 
-        {send_runtime_query::READ_USER_BOOLEAN_VARIABLE, 0x2115}, 
-        {send_runtime_query::READ_INTERNAL_SERIAL_COMMAND, 0x2116}, 
-        {send_runtime_query::READ_INTERNAL_ANALOG_COMMAND, 0x2117},
-        {send_runtime_query::READ_INTERNAL_PULSE_COMMAND, 0x2118}, 
-        {send_runtime_query::READ_TIME, 0x2119}, 
-        {send_runtime_query::READ_SPEKTRUM_RADIO_CAPTURE, 0x211a}, 
-        {send_runtime_query::READ_DESTINATION_POSITION_REACHED_FLAG, 0x211b}, 
-        {send_runtime_query::READ_MEMS_ACCELEROMETER_AXIS, 0x211c}, 
-        {send_runtime_query::READ_MAGSENSOR_TRACK_DETECT, 0x211d}, 
-        {send_runtime_query::READ_MAGSENSOR_TRACK_POSITION, 0x211e},
-        {send_runtime_query::READ_MAGSENSOR_MARKERS, 0x211f}, 
-        {send_runtime_query::READ_MAGSENSOR_STATUS, 0x2120}, 
-        {send_runtime_query::READ_MOTOR_STATUS_FLAGS, 0x2121}, 
-        {send_runtime_query::READ_INDIVIDUAL_DIGITAL_INPUTS, 0x6400}, 
-        {send_runtime_query::READ_ANALOG_INPUTS, 0x6401}, 
-        {send_runtime_query::READ_ANALOG_INPUTS_CONVERTED, 0x6402}, 
-        {send_runtime_query::READ_PULSE_INPUTS, 0x6403},
-        {send_runtime_query::READ_PULSE_INPUTS_CONVERTED, 0x6404},
+    const std::unordered_map<send_runtime_query, command_properties_t> rawcan_comm::_runtime_query_map = { 
+        {send_runtime_query::READ_MOTOR_AMPS, {0x2100, 0x3}}, 
+        {send_runtime_query::READ_ACTUAL_MOTOR_COMMAND, {0x2101, 0x3}}, 
+        {send_runtime_query::READ_ACTUAL_POWER_LEVEL, {0x2102, 0x3}}, 
+        {send_runtime_query::READ_ENCODER_MOTOR_SPEED, {0x2103, 0x3}}, 
+        {send_runtime_query::READ_ABSOLUTE_ENCODER_COUNT, {0x2104, 0x3}}, 
+        {send_runtime_query::READ_ABSOLUTE_BRUSHLESS_COUNTER, {0x2105, 0x3}}, 
+        {send_runtime_query::READ_USER_INTEGER_VARIABLE, {0x2106, 0x3}}, 
+        {send_runtime_query::READ_ENCODER_MOTOR_SPEED_RELATIVE_TO_MAX_SPEED, {0x2107, 0x3}}, 
+        {send_runtime_query::READ_ENCODER_COUNT_RELATIVE, {0x2108, 0x3}}, 
+        {send_runtime_query::READ_BRUSHLESS_COUNT_RELATIVE, {0x2109, 0x3}},
+        {send_runtime_query::READ_BRUSHLESS_MOTOR_SPEED, {0x210a, 0x3}}, 
+        {send_runtime_query::READ_BRUSHLESS_MOTOR_SPEED_RELATIVE_TO_MAX_SPEED, {0x210b, 0x3}}, 
+        {send_runtime_query::READ_BATTERY_AMPS, {0x210c, 0x3}}, 
+        {send_runtime_query::READ_INTERNAL_VOLTAGES, {0x210d, 0x3}}, 
+        {send_runtime_query::READ_ALL_DIGITAL_INPUTS, {0x210e, 0x0}}, 
+        {send_runtime_query::READ_CASE_AND_INTERNAL_TEMPERATURES, {0x210f, 0x3}}, 
+        {send_runtime_query::READ_FEEDBACK, {0x2110, 0x3}},
+        {send_runtime_query::READ_STATUS_FLAGS, {0x211, 0x0}}, 
+        {send_runtime_query::READ_FAULT_FLAGS, {0x2112, 0x0}}, 
+        {send_runtime_query::READ_CURRENT_DIGITAL_OUTPUTS, {0x2113, 0x0}}, 
+        {send_runtime_query::READ_CLOSED_LOOP_ERROR, {0x2114, 0x3}}, 
+        {send_runtime_query::READ_USER_BOOLEAN_VARIABLE, {0x2115, 0x3}}, 
+        {send_runtime_query::READ_INTERNAL_SERIAL_COMMAND, {0x2116, 0x3}}, 
+        {send_runtime_query::READ_INTERNAL_ANALOG_COMMAND, {0x2117, 0x3}},
+        {send_runtime_query::READ_INTERNAL_PULSE_COMMAND, {0x2118, 0x3}}, 
+        {send_runtime_query::READ_TIME, {0x2119, 0x0}}, 
+        {send_runtime_query::READ_SPEKTRUM_RADIO_CAPTURE, {0x211a, 0x3}}, 
+        {send_runtime_query::READ_DESTINATION_POSITION_REACHED_FLAG, {0x211b, 0x3}}, 
+        {send_runtime_query::READ_MEMS_ACCELEROMETER_AXIS, {0x211c, 0x3}}, 
+        {send_runtime_query::READ_MAGSENSOR_TRACK_DETECT, {0x211d, 0x0}}, 
+        {send_runtime_query::READ_MAGSENSOR_TRACK_POSITION, {0x211e, 0x0}},
+        {send_runtime_query::READ_MAGSENSOR_MARKERS, {0x211f, 0x0}}, 
+        {send_runtime_query::READ_MAGSENSOR_STATUS, {0x2120, 0x0}}, 
+        {send_runtime_query::READ_MOTOR_STATUS_FLAGS, {0x2121, 0x0}}, 
+        {send_runtime_query::READ_INDIVIDUAL_DIGITAL_INPUTS, {0x6400, 0x3}}, 
+        {send_runtime_query::READ_ANALOG_INPUTS, {0x6401, 0x3}}, 
+        {send_runtime_query::READ_ANALOG_INPUTS_CONVERTED, {0x6402, 0x3}}, 
+        {send_runtime_query::READ_PULSE_INPUTS, {0x6403, 0x3}},
+        {send_runtime_query::READ_PULSE_INPUTS_CONVERTED, {0x6404, 0x3}},
     };
 
     rawcan_comm::rawcan_comm(canid_t roboteq_can_id, std::string ifname): _roboteq_can_id(roboteq_can_id) {
@@ -133,11 +133,11 @@ namespace roboteq {
 
         struct can_frame frame;
 
-        frame.can_id  = sdo_cob_id_offset + roboteq::rawcan_comm::_roboteq_can_id;
+        frame.can_id  = _sdo_cob_id_offset + roboteq::rawcan_comm::_roboteq_can_id;
         frame.can_dlc = 8;
-        frame.data[0] = 0x20;
-        frame.data[1] = rawcan_comm::_runtime_command_map.at(command);
-        frame.data[2] = rawcan_comm::_runtime_command_map.at(command) >> 8;
+        frame.data[0] = _sdo_command + rawcan_comm::_runtime_command_map.at(command).number_of_data_bytes;
+        frame.data[1] = rawcan_comm::_runtime_command_map.at(command).canopen_index; 
+        frame.data[2] = rawcan_comm::_runtime_command_map.at(command).canopen_index >> 8;
         frame.data[3] = subindex;
         frame.data[4] = data >> 0;
         frame.data[5] = data >> 8;
@@ -159,11 +159,11 @@ namespace roboteq {
         
         struct can_frame frame;
 
-        frame.can_id  = sdo_cob_id_offset + roboteq::rawcan_comm::_roboteq_can_id;
+        frame.can_id  = _sdo_cob_id_offset + roboteq::rawcan_comm::_roboteq_can_id;
         frame.can_dlc = 8;
-        frame.data[0] = 0x48;
-        frame.data[1] = rawcan_comm::_runtime_query_map.at(query);
-        frame.data[2] = rawcan_comm::_runtime_query_map.at(query) >> 8;
+         frame.data[0] = _sdo_query + rawcan_comm::_runtime_query_map.at(query).number_of_data_bytes;
+        frame.data[1] = rawcan_comm::_runtime_query_map.at(query).canopen_index; 
+        frame.data[2] = rawcan_comm::_runtime_query_map.at(query).canopen_index >> 8;
         frame.data[3] = subindex;
         frame.data[4] = 0 >> 0;
         frame.data[5] = 0 >> 8;
