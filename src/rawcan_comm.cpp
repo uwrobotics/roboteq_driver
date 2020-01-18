@@ -104,7 +104,7 @@ namespace roboteq {
         addr.can_family  = AF_CAN;
         addr.can_ifindex = ifr.ifr_ifindex;
 
-        // printf("%s at index %d\n", ifname, ifr.ifr_ifindex);
+        std::cout << ifname << " at index " << ifr.ifr_ifindex << std::endl;
 
         if(bind(_socket_handle, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
             printf("Error in socket bind");
@@ -143,11 +143,15 @@ namespace roboteq {
         frame.data[5] = data >> 8;
         frame.data[6] = data >> 16;
         frame.data[7] = data >> 24;
+
+        std::cout <<  "Write" << std::endl;
             
         write(roboteq::rawcan_comm::_socket_handle, &frame, sizeof(struct can_frame));
         _nbytes = read(roboteq::rawcan_comm::_socket_handle, &frame, sizeof(struct can_frame));
 
-        if (_nbytes != sizeof(struct can_frame)) {
+        std::cout <<  "Wrote" << std::endl;
+
+        if (_nbytes == sizeof(struct can_frame)) {
                 printf("Invalid CAN frame\n");
                 }
         else {
@@ -170,8 +174,12 @@ namespace roboteq {
         frame.data[6] = 0 >> 16;
         frame.data[7] = 0 >> 24;
 
+        std::cout <<  "Write" << std::endl;
+
         write(roboteq::rawcan_comm::_socket_handle, &frame, sizeof(struct can_frame));
         _nbytes = read(roboteq::rawcan_comm::_socket_handle, &frame, sizeof(struct can_frame));
+
+        std::cout <<  "Wrote" << std::endl;
 
         if (_nbytes != sizeof(struct can_frame)) {
                 printf("Invalid CAN frame\n");

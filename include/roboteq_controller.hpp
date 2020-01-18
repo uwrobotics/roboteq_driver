@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory> 
+#include <iostream>
 
 #include "i_comm.hpp"
 
@@ -21,6 +22,7 @@ namespace roboteq {
 
         void SetVelocity(uint16_t speed, uint8_t channel){
             _comm->download(roboteq::send_runtime_command::SET_VELOCITY, channel, speed);
+            std::cout << "Velocity!" << std::endl;
         };
         	
         void SetEncoderCounter(long counter, uint8_t channel){
@@ -154,6 +156,7 @@ namespace roboteq {
 
         int16_t ReadBatteryAmps(uint8_t channel){
             _comm->upload(roboteq::send_runtime_query::READ_MOTOR_AMPS, channel);
+            std::cout << "Amps!" << std::endl;
         };	
 
         uint16_t ReadInternalVoltages(uint8_t param){
