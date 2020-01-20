@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(include)
 
 add_library(${PROJECT_NAME}
-            src/rawcan_comm.cpp
+            src/canopen_comm.cpp
             src/roboteq_controller.cpp)
 
 add_executable(roboteq_driver_example_main

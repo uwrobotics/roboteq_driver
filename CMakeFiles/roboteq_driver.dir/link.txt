@@ -1,0 +1,2 @@
+/usr/bin/ar qc libroboteq_driver.a  CMakeFiles/roboteq_driver.dir/src/canopen_comm.cpp.o CMakeFiles/roboteq_driver.dir/src/roboteq_controller.cpp.o
+/usr/bin/ranlib libroboteq_driver.a

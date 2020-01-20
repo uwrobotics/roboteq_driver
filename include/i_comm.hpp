@@ -78,8 +78,8 @@ namespace roboteq {
         i_comm(){};
         virtual ~i_comm(){}
 
-        virtual bool download(send_runtime_command command, uint8_t subindex, uint32_t data)=0;
-        virtual uint32_t upload(send_runtime_query query, uint8_t subindex)=0;
+        virtual bool sdo_download(send_runtime_command command, uint8_t subindex, uint32_t data)=0;
+        virtual uint32_t sdo_upload(send_runtime_query query, uint8_t subindex)=0;
                 
         private :
 
