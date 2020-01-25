@@ -3,8 +3,8 @@
 
 CMakeFiles/roboteq_driver.dir/src/canopen_comm.cpp.o
  /home/akeaveny/cpp/roboteq_driver/src/canopen_comm.cpp
- include/i_comm.hpp
  include/canopen_comm.hpp
+ include/i_comm.hpp
 CMakeFiles/roboteq_driver.dir/src/roboteq_controller.cpp.o
  /home/akeaveny/cpp/roboteq_driver/src/roboteq_controller.cpp
  include/i_comm.hpp

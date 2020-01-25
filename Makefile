@@ -136,33 +136,6 @@ roboteq_driver_example_main/fast:
 	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/build
 .PHONY : roboteq_driver_example_main/fast
 
-src/example_main.o: src/example_main.cpp.o
-
-.PHONY : src/example_main.o
-
-# target to build an object file
-src/example_main.cpp.o:
-	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.o
-.PHONY : src/example_main.cpp.o
-
-src/example_main.i: src/example_main.cpp.i
-
-.PHONY : src/example_main.i
-
-# target to preprocess a source file
-src/example_main.cpp.i:
-	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.i
-.PHONY : src/example_main.cpp.i
-
-src/example_main.s: src/example_main.cpp.s
-
-.PHONY : src/example_main.s
-
-# target to generate assembly for a file
-src/example_main.cpp.s:
-	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.s
-.PHONY : src/example_main.cpp.s
-
 src/canopen_comm.o: src/canopen_comm.cpp.o
 
 .PHONY : src/canopen_comm.o
@@ -189,6 +162,33 @@ src/canopen_comm.s: src/canopen_comm.cpp.s
 src/canopen_comm.cpp.s:
 	$(MAKE) -f CMakeFiles/roboteq_driver.dir/build.make CMakeFiles/roboteq_driver.dir/src/canopen_comm.cpp.s
 .PHONY : src/canopen_comm.cpp.s
+
+src/example_main.o: src/example_main.cpp.o
+
+.PHONY : src/example_main.o
+
+# target to build an object file
+src/example_main.cpp.o:
+	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.o
+.PHONY : src/example_main.cpp.o
+
+src/example_main.i: src/example_main.cpp.i
+
+.PHONY : src/example_main.i
+
+# target to preprocess a source file
+src/example_main.cpp.i:
+	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.i
+.PHONY : src/example_main.cpp.i
+
+src/example_main.s: src/example_main.cpp.s
+
+.PHONY : src/example_main.s
+
+# target to generate assembly for a file
+src/example_main.cpp.s:
+	$(MAKE) -f CMakeFiles/roboteq_driver_example_main.dir/build.make CMakeFiles/roboteq_driver_example_main.dir/src/example_main.cpp.s
+.PHONY : src/example_main.cpp.s
 
 src/roboteq_controller.o: src/roboteq_controller.cpp.o
 
@@ -227,12 +227,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... roboteq_driver"
 	@echo "... roboteq_driver_example_main"
-	@echo "... src/example_main.o"
-	@echo "... src/example_main.i"
-	@echo "... src/example_main.s"
 	@echo "... src/canopen_comm.o"
 	@echo "... src/canopen_comm.i"
 	@echo "... src/canopen_comm.s"
+	@echo "... src/example_main.o"
+	@echo "... src/example_main.i"
+	@echo "... src/example_main.s"
 	@echo "... src/roboteq_controller.o"
 	@echo "... src/roboteq_controller.i"
 	@echo "... src/roboteq_controller.s"

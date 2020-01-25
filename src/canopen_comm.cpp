@@ -133,12 +133,10 @@ namespace roboteq {
         frame.data[7] = data >> 24;
 
         write(roboteq::canopen_comm::_socket_handle, &frame, sizeof(struct can_frame));
-        std::cout <<  "Write" << std::endl;
 
         struct can_frame response_frame = {};
 
         uint32_t nbytes = read(roboteq::canopen_comm::_socket_handle, &response_frame, sizeof(struct can_frame));
-        std::cout <<  "Read" << std::endl;
 
         std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" << static_cast<unsigned>(response_frame.data[0])
                                 << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" << static_cast<unsigned>(response_frame.data[2]) << "\t" << static_cast<unsigned>(response_frame.data[3]) 
@@ -170,12 +168,10 @@ namespace roboteq {
         query_frame.data[7] = 0;
 
         write(roboteq::canopen_comm::_socket_handle, &query_frame, sizeof(struct can_frame));
-        std::cout <<  "Write" << std::endl;
 
         struct can_frame response_frame = {};
 
         uint32_t nbytes = read(roboteq::canopen_comm::_socket_handle, &response_frame, sizeof(struct can_frame));
-        std::cout <<  "Read" << std::endl;
 
         std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" << static_cast<unsigned>(response_frame.data[0])
                                 << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" << static_cast<unsigned>(response_frame.data[2]) << "\t" << static_cast<unsigned>(response_frame.data[3]) 
