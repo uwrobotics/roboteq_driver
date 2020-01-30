@@ -21,6 +21,7 @@ namespace roboteq {
 
     const std::unordered_map<send_runtime_command, command_properties_t> canopen_comm::_runtime_command_map = { 
   
+        {send_runtime_command::SET_MOTOR_COMMAND, {0x2000, 0}},
         {send_runtime_command::SET_POSITION, {0x2001, 0}}, 
         {send_runtime_command::SET_VELOCITY, {0x2002, 2}},
         {send_runtime_command::SET_ENCODER_COUNTER, {0x2003, 0}},
@@ -138,17 +139,17 @@ namespace roboteq {
 
         uint32_t nbytes = read(roboteq::canopen_comm::_socket_handle, &response_frame, sizeof(struct can_frame));
 
-        std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" << static_cast<unsigned>(response_frame.data[0])
-                                << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" << static_cast<unsigned>(response_frame.data[2]) << "\t" << static_cast<unsigned>(response_frame.data[3]) 
-                                << "\t" << static_cast<unsigned>(response_frame.data[4]) << "\t" << static_cast<unsigned>(response_frame.data[5]) << "\t" << static_cast<unsigned>(response_frame.data[6])
-                                << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
+        // std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" << static_cast<unsigned>(response_frame.data[0])
+        //                         << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" << static_cast<unsigned>(response_frame.data[2]) << "\t" << static_cast<unsigned>(response_frame.data[3]) 
+        //                         << "\t" << static_cast<unsigned>(response_frame.data[4]) << "\t" << static_cast<unsigned>(response_frame.data[5]) << "\t" << static_cast<unsigned>(response_frame.data[6])
+        //                         << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
     
         if (nbytes != sizeof(struct can_frame)) {
                 printf("Invalid CAN frame\n");
                 return 0;
                 }
         else {
-                return (response_frame.data[4] | response_frame.data[5] << 8 | response_frame.data[6] << 16 | response_frame.data[7] << 24);
+                return 1;
                 }
     }
 
@@ -173,10 +174,10 @@ namespace roboteq {
 
         uint32_t nbytes = read(roboteq::canopen_comm::_socket_handle, &response_frame, sizeof(struct can_frame));
 
-        std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" << static_cast<unsigned>(response_frame.data[0])
-                                << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" << static_cast<unsigned>(response_frame.data[2]) << "\t" << static_cast<unsigned>(response_frame.data[3]) 
-                                << "\t" << static_cast<unsigned>(response_frame.data[4]) << "\t" << static_cast<unsigned>(response_frame.data[5]) << "\t" << static_cast<unsigned>(response_frame.data[6])
-                                << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
+        // std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" << static_cast<unsigned>(response_frame.data[0])
+        //                         << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" << static_cast<unsigned>(response_frame.data[2]) << "\t" << static_cast<unsigned>(response_frame.data[3]) 
+        //                         << "\t" << static_cast<unsigned>(response_frame.data[4]) << "\t" << static_cast<unsigned>(response_frame.data[5]) << "\t" << static_cast<unsigned>(response_frame.data[6])
+        //                         << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
     
         if (nbytes != sizeof(struct can_frame)) {
                 printf("Invalid CAN frame\n");

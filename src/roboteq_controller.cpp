@@ -12,113 +12,118 @@ namespace roboteq {
     }
 
      // set methods
-    int32_t roboteq_controller::SetPosition(int32_t position, uint8_t channel){
-        int32_t sdo_response = static_cast<int32_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_POSITION, channel, position));
+    bool roboteq_controller::SetMotorCommand(int32_t command, uint8_t channel){
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_MOTOR_COMMAND, channel, command));
+        return sdo_response;
+    }
+
+    bool roboteq_controller::SetPosition(int32_t position, uint8_t channel){
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_POSITION, channel, position));
         return sdo_response;
     }
 
     int16_t roboteq_controller::SetVelocity(int32_t speed, uint8_t channel){
-           int16_t sdo_response = static_cast<int16_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_VELOCITY, channel, speed));
+           bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_VELOCITY, channel, speed));
             return sdo_response;
     }
         	
     int32_t roboteq_controller::SetEncoderCounter(int32_t counter, uint8_t channel){
-        int32_t sdo_response = static_cast<int32_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_ENCODER_COUNTER, channel, counter));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_ENCODER_COUNTER, channel, counter));
         return sdo_response;
     }
     
     int32_t roboteq_controller::SetBrushlessCounter(int32_t counter, uint8_t channel){
-        int32_t sdo_response = static_cast<int32_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_BRUSHLESS_COUNTER, channel, counter));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_BRUSHLESS_COUNTER, channel, counter));
         return sdo_response;
     }
 
     int32_t roboteq_controller::SetUserIntVariable(int32_t var, uint8_t nbvar){
-        int32_t sdo_response = static_cast<int32_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_USER_INT_VARIABLE, nbvar, var));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_USER_INT_VARIABLE, nbvar, var));
         return sdo_response;
     }
 
     int32_t roboteq_controller::SetAcceleration(int32_t accel, uint8_t channel){
-        int32_t sdo_response = static_cast<int32_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_ACCELERATION, channel, accel));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_ACCELERATION, channel, accel));
         return sdo_response;
     }
 
     int32_t roboteq_controller::SetDeceleration(int32_t decel, uint8_t channel){
-        int32_t sdo_response = static_cast<int32_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_DECELERATION, channel, decel));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_DECELERATION, channel, decel));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SetAllDigitalOutBits(uint8_t out_bits){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_ALL_DIGITAL_OUT_BITS, 0, out_bits));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_ALL_DIGITAL_OUT_BITS, 0, out_bits));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SetIndividualDigitalOutBits(uint8_t out_bits){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_INDIVIDUAL_DIGITAL_OUT_BITS, 0, out_bits));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_INDIVIDUAL_DIGITAL_OUT_BITS, 0, out_bits));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::ResetIndividualOutBits(uint8_t out_bits){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::RESET_INDIVIDUAL_OUT_BITS, 0, out_bits));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::RESET_INDIVIDUAL_OUT_BITS, 0, out_bits));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::LoadHomeCounter(uint8_t channel){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::LOAD_HOME_COUNTER, 0, channel));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::LOAD_HOME_COUNTER, 0, channel));
         return sdo_response;
     }
 
-    uint8_t roboteq_controller::EmergencyShutdown(void){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::EMERGENCY_SHUTDOWN, 0, 0));
+    uint8_t roboteq_controller::EmergencyShutdown(uint8_t channel){
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::EMERGENCY_SHUTDOWN, 0, channel));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::ReleaseShutdown(void){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::RELEASE_SHUTDOWN, 0, 0));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::RELEASE_SHUTDOWN, 0, 0));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::StopInAllModes(uint8_t channel){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::STOP_IN_ALL_MODES, channel, 0));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::STOP_IN_ALL_MODES, channel, 0));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SetPosRelative(int32_t position, uint8_t channel){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_POS_RELATIVE, channel, position));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_POS_RELATIVE, channel, position));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SetNextPosAbsolute(int32_t position, uint8_t channel){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_POS_ABSOLUTE, channel, position));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_POS_ABSOLUTE, channel, position));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SetNextPosRelative(int32_t position, uint8_t channel){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_POS_RELATIVE, channel, position));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_POS_RELATIVE, channel, position));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SetNextAcceleration(int32_t accel, uint8_t channel){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_ACCELERATION, channel, accel));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_ACCELERATION, channel, accel));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SetNextDeceleration(int32_t decel, uint8_t channel){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_DECELERATION, channel, decel));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_DECELERATION, channel, decel));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SetNextVelocity(int32_t speed, uint8_t channel){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_VELOCITY, channel, speed));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_NEXT_VELOCITY, channel, speed));
         return sdo_response;
     }
 
     uint32_t roboteq_controller::SetUserBoolVariable(uint32_t var, uint8_t nbvar){
-        uint32_t sdo_response = static_cast<uint32_t>(_comm->sdo_download(roboteq::send_runtime_command::SET_USER_BOOL_VARIABLE, nbvar, var));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SET_USER_BOOL_VARIABLE, nbvar, var));
         return sdo_response;
     }
 
     uint8_t roboteq_controller::SaveConfigToFlash(void){
-        uint8_t sdo_response = static_cast<uint8_t>(_comm->sdo_download(roboteq::send_runtime_command::SAVE_CONFIG_TO_FLASH, 0, 0));
+        bool sdo_response = static_cast<bool>(_comm->sdo_download(roboteq::send_runtime_command::SAVE_CONFIG_TO_FLASH, 0, 0));
         return sdo_response;
     }	
 

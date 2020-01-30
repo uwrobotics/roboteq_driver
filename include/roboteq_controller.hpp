@@ -16,7 +16,9 @@ namespace roboteq {
         ~roboteq_controller(){}
 
         // set methods
-        int32_t SetPosition(int32_t position, uint8_t channel);
+        bool SetMotorCommand(int32_t command, uint8_t channel);
+
+        bool SetPosition(int32_t position, uint8_t channel);
 
         int16_t SetVelocity(int32_t speed, uint8_t channel);
         	
@@ -38,7 +40,7 @@ namespace roboteq {
         
         uint8_t LoadHomeCounter(uint8_t channel);
         
-        uint8_t EmergencyShutdown(void);
+        uint8_t EmergencyShutdown(uint8_t channel);
         
         uint8_t ReleaseShutdown(void);
     

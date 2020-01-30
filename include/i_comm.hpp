@@ -4,7 +4,8 @@ namespace roboteq {
 
     enum class send_runtime_command {
 
-        SET_POSITION=0,
+        SET_MOTOR_COMMAND=0,
+        SET_POSITION,
         SET_VELOCITY,
         SET_ENCODER_COUNTER,
         SET_BRUSHLESS_COUNTER,

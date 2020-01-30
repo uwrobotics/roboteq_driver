@@ -8,7 +8,7 @@
 
 namespace roboteq { 
     
-     typedef struct command_properties {
+     typedef struct {
         int canopen_index;
         int number_of_unused_bytes;
         } command_properties_t;
