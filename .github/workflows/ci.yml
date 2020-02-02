@@ -1,9 +1,9 @@
-name: clang-format
+name: CI
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  clang-format:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,3 +17,5 @@ jobs:
         uses: DoozyX/clang-format-lint-action@v0.5
         with:
           source: 'include'
+
+  # TODO: clang-tidy job
