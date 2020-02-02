@@ -3,6 +3,9 @@ project(roboteq_driver)
 
 set(CMAKE_CXX_STANDARD 14)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
 #inlcuding header files
 include_directories(include)
