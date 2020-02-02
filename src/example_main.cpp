@@ -5,53 +5,53 @@
 #include "i_comm.hpp"
 #include "roboteq_controller.hpp"
 
-int main(void) {
+int main() {
   std::unique_ptr<roboteq::i_comm> comm = std::make_unique<roboteq::canopen_comm>(0x01, "can0");
   roboteq::roboteq_controller motor_controller(std::move(comm));
 
   for (int i = 0; i < 10000; i++) {
-    bool release_shutdown = motor_controller.ReleaseShutdown();
+    bool release_shutdown = motor_controller.releaseShutdown();
     std::cout << release_shutdown << std::endl;
 
-    bool set_motor_command = motor_controller.SetMotorCommand(200, 1);
+    bool set_motor_command = motor_controller.setMotorCommand(200, 1);
     std::cout << "set_motor_command successful:" << set_motor_command << std::endl;
 
-    bool set_velocity = motor_controller.SetVelocity(200, 1);
+    bool set_velocity = motor_controller.setVelocity(200, 1);
     std::cout << "set_velocity successful:" << set_velocity << std::endl;
-    int32_t encoder_motor_speed = motor_controller.ReadEncoderMotorSpeed(1);
+    int32_t encoder_motor_speed = motor_controller.readEncoderMotorSpeed(1);
     std::cout << "encoder_motor_speed: " << encoder_motor_speed << std::endl;
 
-    int16_t feedback = motor_controller.ReadFeedback(1);
+    int16_t feedback = motor_controller.readFeedback(1);
     std::cout << "feedback successful:" << feedback << std::endl;
   }
 
   // // set methods
 
-  // bool set_position = motor_controller.SetPosition(300,1);
+  // bool set_position = motor_controller.setPosition(300,1);
   // std::cout << set_position << std::endl;
 
-  // bool set_velocity = motor_controller.SetVelocity(100, 2);
+  // bool set_velocity = motor_controller.setVelocity(100, 2);
   // std::cout << set_velocity << std::endl;
 
-  // bool set_encoder_counter = motor_controller.SetEncoderCounter(100, 2);
+  // bool set_encoder_counter = motor_controller.setEncoderCounter(100, 2);
   // std::cout << set_encoder_counter << std::endl;
 
   // bool set_brushless_counter = motor_controller.SetBrushlessCounter(100, 2);
   // std::cout << set_brushless_counter << std::endl;
 
-  // // // bool set_user_int_variable = motor_controller.SetUserIntVariable(int32_t var, uint8_t nbvar);
+  // // // bool set_user_int_variable = motor_controller.setUserIntVariable(int32_t var, uint8_t nbvar);
   // // // std::cout << set_user_int_variable << std::endl;
 
-  // bool set_acceleration = motor_controller.SetAcceleration(100, 2);
+  // bool set_acceleration = motor_controller.setAcceleration(100, 2);
   // std::cout << set_acceleration << std::endl;
 
-  // bool set_deceleration = motor_controller.SetDeceleration(100, 2);
+  // bool set_deceleration = motor_controller.setDeceleration(100, 2);
   // std::cout << set_deceleration << std::endl;
 
-  // bool set_all_digital_out_bits = motor_controller.SetAllDigitalOutBits(1);
+  // bool set_all_digital_out_bits = motor_controller.setAllDigitalOutBits(1);
   // std::cout << set_all_digital_out_bits << std::endl;
 
-  // // // bool set_individual_digital_out_bits = motor_controller.SetIndividualDigitalOutBits(uint8_t out_bits);
+  // // // bool set_individual_digital_out_bits = motor_controller.setIndividualDigitalOutBits(uint8_t out_bits);
   // // // std::cout << set_individual_digital_out_bits << std::endl;
 
   // // // bool reset_individual_out_bits = motor_controller.ResetIndividualOutBits(uint8_t out_bits);

@@ -1,4 +1,5 @@
 ---
+# This file should match the one present at: https://github.com/uwrobotics/uwrt_mars_rover/
 BasedOnStyle: Google
 ColumnLimit: 120
 AllowShortFunctionsOnASingleLine: Empty

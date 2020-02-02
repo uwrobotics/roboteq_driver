@@ -15,123 +15,68 @@ class roboteq_controller {
   ~roboteq_controller() {}
 
   // set methods
-  bool SetMotorCommand(int32_t command, uint8_t channel);
-
-  bool SetPosition(int32_t position, uint8_t channel);
-
-  int16_t SetVelocity(int32_t speed, uint8_t channel);
-
-  int32_t SetEncoderCounter(int32_t counter, uint8_t channel);
-
-  int32_t SetBrushlessCounter(int32_t counter, uint8_t channel);
-
-  int32_t SetUserIntVariable(int32_t var, uint8_t nbvar);
-
-  int32_t SetAcceleration(int32_t accel, uint8_t channel);
-
-  int32_t SetDeceleration(int32_t decel, uint8_t channel);
-
-  uint8_t SetAllDigitalOutBits(uint8_t out_bits);
-
-  uint8_t SetIndividualDigitalOutBits(uint8_t out_bits);
-
-  uint8_t ResetIndividualOutBits(uint8_t out_bits);
-
-  uint8_t LoadHomeCounter(uint8_t channel);
-
-  uint8_t EmergencyShutdown(uint8_t channel);
-
-  uint8_t ReleaseShutdown(void);
-
-  uint8_t StopInAllModes(uint8_t channel);
-
-  uint8_t SetPosRelative(int32_t position, uint8_t channel);
-
-  uint8_t SetNextPosAbsolute(int32_t position, uint8_t channel);
-
-  uint8_t SetNextPosRelative(int32_t position, uint8_t channel);
-
-  uint8_t SetNextAcceleration(int32_t accel, uint8_t channel);
-
-  uint8_t SetNextDeceleration(int32_t decel, uint8_t channel);
-
-  uint8_t SetNextVelocity(int32_t speed, uint8_t channel);
-
-  uint32_t SetUserBoolVariable(uint32_t var, uint8_t nbvar);
-
-  uint8_t SaveConfigToFlash(void);
+  bool setMotorCommand(int32_t command, uint8_t channel);
+  bool setPosition(int32_t position, uint8_t channel);
+  bool setVelocity(int32_t speed, uint8_t channel);
+  bool setEncoderCounter(int32_t counter, uint8_t channel);
+  bool setBrushlessCounter(int32_t counter, uint8_t channel);
+  bool setUserIntVariable(int32_t var, uint8_t nbvar);
+  bool setAcceleration(int32_t accel, uint8_t channel);
+  bool setDeceleration(int32_t decel, uint8_t channel);
+  bool setAllDigitalOutBits(uint8_t out_bits);
+  bool setIndividualDigitalOutBits(uint8_t out_bits);
+  bool resetIndividualOutBits(uint8_t out_bits);
+  bool loadHomeCounter(uint8_t channel);
+  bool emergencyShutdown(uint8_t channel);
+  bool releaseShutdown(void);
+  bool stopInAllModes(uint8_t channel);
+  bool setPosRelative(int32_t position, uint8_t channel);
+  bool setNextPosAbsolute(int32_t position, uint8_t channel);
+  bool setNextPosRelative(int32_t position, uint8_t channel);
+  bool setNextAcceleration(int32_t accel, uint8_t channel);
+  bool setNextDeceleration(int32_t decel, uint8_t channel);
+  bool setNextVelocity(int32_t speed, uint8_t channel);
+  bool setUserBoolVariable(uint32_t var, uint8_t nbvar);
+  bool saveConfigToFlash(void);
 
   // read methods
-  int16_t ReadMotorAmps(uint8_t channel);
+  int16_t readMotorAmps(uint8_t channel);
+  int16_t readActualMotorCommand(uint8_t channel);
+  int16_t readAppliedPowerLevel(uint8_t channel);
+  int32_t readEncoderMotorSpeed(uint8_t channel);
+  int32_t readAbsoluteEncoderCount(uint8_t channel);
+  int32_t readAbsoluteBrushlessCounter(uint8_t channel);
+  int32_t readUserIntegerVariable(int32_t nbvar);
+  int16_t readEncoderMotorSpeedRelativeToMaxSpeed(uint8_t channel);
+  int32_t readEncoderCountRelative(uint8_t channel);
+  int32_t readBrushlessCountRelative(uint8_t channel);
+  int16_t readBrushlessMotorSpeed(uint8_t channel);
+  int16_t readBrushlessMotorSpeedRelativeToMaxSpeed(uint8_t channel);
+  int16_t readBatteryAmps(uint8_t channel);
+  uint16_t readInternalVoltages(uint8_t param);
+  uint32_t readAllDigitalInputs(void);
+  int8_t readCaseAndInternalTemperatures(uint8_t param);
+  int16_t readFeedback(uint8_t channel);
+  uint16_t readStatusFlags(void);
+  uint16_t readFaultFlags(void);
+  uint16_t readCurrentDigitalOutputs(void);
+  int32_t readClosedLoopError(uint8_t channel);
+  bool readUserBooleanVariable(uint32_t nbvar);
+  int32_t readInternalSerialCommand(uint8_t channel);
+  int32_t readInternalAnalogCommand(uint8_t channel);
+  int32_t readInternalInternalPulseCommand(uint8_t channel);
+  uint32_t readTime(uint8_t param);
+  uint16_t readSpektrumRadioCapture(uint8_t nb_capture);
+  uint8_t readDestinationPositionReachedFlag(uint8_t channel);
+  int32_t readMEMSAccelerometerAxis(uint8_t axis);
+  uint8_t readMagsensorTrackDetect(void);
+  int16_t readMagsensorTrackPosition(uint8_t nb_pulse);
+  uint8_t readMagsensorMarkers(uint8_t nb_pulse);
+  uint16_t readMagsensorStatus(uint8_t nb_pulse);
+  uint16_t readMotorStatusFlags(uint8_t nb_pulse);
 
-  int16_t ReadActualMotorCommand(uint8_t channel);
-
-  int16_t ReadAppliedPowerLevel(uint8_t channel);
-
-  int32_t ReadEncoderMotorSpeed(uint8_t channel);
-
-  int32_t ReadAbsoluteEncoderCount(uint8_t channel);
-
-  int32_t ReadAbsoluteBrushlessCounter(uint8_t channel);
-
-  int32_t ReadUserIntegerVariable(int32_t nbvar);
-
-  int16_t ReadEncoderMotorSpeedRelativeToMaxSpeed(uint8_t channel);
-
-  int32_t ReadEncoderCountRelative(uint8_t channel);
-
-  int32_t ReadBrushlessCountRelative(uint8_t channel);
-
-  int16_t ReadBrushlessMotorSpeed(uint8_t channel);
-
-  int16_t ReadBrushlessMotorSpeedRelativeToMaxSpeed(uint8_t channel);
-
-  int16_t ReadBatteryAmps(uint8_t channel);
-
-  uint16_t ReadInternalVoltages(uint8_t param);
-
-  uint32_t ReadAllDigitalInputs(void);
-
-  int8_t ReadCaseAndInternalTemperatures(uint8_t param);
-
-  int16_t ReadFeedback(uint8_t channel);
-
-  uint16_t ReadStatusFlags(void);
-
-  uint16_t ReadFaultFlags(void);
-
-  uint16_t ReadCurrentDigitalOutputs(void);
-
-  int32_t ReadClosedLoopError(uint8_t channel);
-
-  bool ReadUserBooleanVariable(uint32_t nbvar);
-
-  int32_t ReadInternalSerialCommand(uint8_t channel);
-
-  int32_t ReadInternalAnalogCommand(uint8_t channel);
-
-  int32_t ReadInternalInternalPulseCommand(uint8_t channel);
-
-  uint32_t ReadTime(uint8_t param);
-
-  uint16_t ReadSpektrumRadioCapture(uint8_t nb_capture);
-
-  uint8_t ReadDestinationPositionReachedFlag(uint8_t channel);
-
-  int32_t ReadMEMSAccelerometerAxis(uint8_t axis);
-
-  uint8_t ReadMagsensorTrackDetect(void);
-
-  int16_t ReadMagsensorTrackPosition(uint8_t nb_pulse);
-
-  uint8_t ReadMagsensorMarkers(uint8_t nb_pulse);
-
-  uint16_t ReadMagsensorStatus(uint8_t nb_pulse);
-
-  uint16_t ReadMotorStatusFlags(uint8_t nb_pulse);
-
-  // private :
-  std::unique_ptr<i_comm> _comm;
+ private:
+  std::unique_ptr<i_comm> comm_interface_;
 };
 
 }  // namespace roboteq

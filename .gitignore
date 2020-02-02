@@ -24,14 +24,17 @@
 *.exe
 *.out
 *.app
+# IDE
+*.cbp
+.idea
+.vscode
 
 #CMake generated files
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+CMakeFiles
 
-# Don't track content of these folders
-build/
-.vscode/
-CMakeFiles/
+# Misc
+build
 
