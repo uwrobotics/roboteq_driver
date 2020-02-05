@@ -9,15 +9,16 @@ int main() {
   std::unique_ptr<roboteq::i_comm> comm = std::make_unique<roboteq::canopen_comm>(0x01, "can0");
   roboteq::roboteq_controller motor_controller(std::move(comm));
 
-  for (int i = 0; i < 10000; i++) {
+  for (int i = 0; i < 100; i++) {
     bool release_shutdown = motor_controller.releaseShutdown();
     std::cout << release_shutdown << std::endl;
 
-    bool set_motor_command = motor_controller.setMotorCommand(200, 1);
+    bool set_motor_command = motor_controller.setMotorCommand(0, 1);
     std::cout << "set_motor_command successful:" << set_motor_command << std::endl;
 
-    bool set_velocity = motor_controller.setVelocity(200, 1);
+    bool set_velocity = motor_controller.setVelocity(00, 1);
     std::cout << "set_velocity successful:" << set_velocity << std::endl;
+
     int32_t encoder_motor_speed = motor_controller.readEncoderMotorSpeed(1);
     std::cout << "encoder_motor_speed: " << encoder_motor_speed << std::endl;
 

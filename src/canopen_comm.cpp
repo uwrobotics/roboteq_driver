@@ -6,6 +6,7 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include <cstdio>
 #include <cstring>
@@ -101,6 +102,9 @@ canopen_comm::canopen_comm(canid_t roboteq_can_id, const std::string& ifname) : 
   rfilter[0].can_mask = CAN_SFF_MASK;
   rfilter[1].can_id = sdo_response_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
   rfilter[1].can_mask = CAN_SFF_MASK;
+
+  // struct timeval receive_timeout = 500000}; //0.5 seconds
+  // setsockopt(socket_handle_, SOL_SOCKET, SO_RCVTIMEO, &receive_timeout, sizeof(receive_timeout));
 
   setsockopt(socket_handle_, SOL_CAN_RAW, CAN_RAW_FILTER, &rfilter, sizeof(rfilter));
 
