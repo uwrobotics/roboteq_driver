@@ -5,8 +5,8 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
-#include <unistd.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 #include <cstdio>
 #include <cstring>
@@ -96,17 +96,17 @@ canopen_comm::canopen_comm(canid_t roboteq_can_id, const std::string& ifname) : 
 
   std::cout << ifname << " at index " << ifr.ifr_ifindex << std::endl;
 
-  struct can_filter rfilter[2];
+  std::array<struct can_filter, 2> can_receive_filter{};
 
-  rfilter[0].can_id = sdo_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
-  rfilter[0].can_mask = CAN_SFF_MASK;
-  rfilter[1].can_id = sdo_response_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
-  rfilter[1].can_mask = CAN_SFF_MASK;
+  can_receive_filter[0].can_id = sdo_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
+  can_receive_filter[0].can_mask = (CAN_EFF_FLAG | CAN_RTR_FLAG | CAN_EFF_MASK);
+  can_receive_filter[1].can_id = sdo_response_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
+  can_receive_filter[1].can_mask = (CAN_EFF_FLAG | CAN_RTR_FLAG | CAN_EFF_MASK);
 
   // struct timeval receive_timeout = 500000}; //0.5 seconds
   // setsockopt(socket_handle_, SOL_SOCKET, SO_RCVTIMEO, &receive_timeout, sizeof(receive_timeout));
 
-  setsockopt(socket_handle_, SOL_CAN_RAW, CAN_RAW_FILTER, &rfilter, sizeof(rfilter));
+  setsockopt(socket_handle_, SOL_CAN_RAW, CAN_RAW_FILTER, can_receive_filter.data(), can_receive_filter.size());
 
   // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast): reinterpret cast required by syscall
   if (bind(socket_handle_, reinterpret_cast<struct sockaddr*>(&addr), sizeof(addr)) < 0) {
@@ -119,15 +119,15 @@ bool canopen_comm::sdo_download(send_runtime_command command, uint8_t subindex, 
   struct can_frame frame {};
 
   frame.can_id = sdo_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
-  frame.can_dlc = 8;
+  frame.can_dlc = CAN_FRAME_SIZE_BYTES;
   frame.data[0] = (sdo_command_ << 4) | (canopen_comm::RUNTIME_COMMAND_MAP.at(command).number_of_unused_bytes << 2);
   frame.data[1] = canopen_comm::RUNTIME_COMMAND_MAP.at(command).canopen_index;
-  frame.data[2] = canopen_comm::RUNTIME_COMMAND_MAP.at(command).canopen_index >> 8;
+  frame.data[2] = canopen_comm::RUNTIME_COMMAND_MAP.at(command).canopen_index >> bytesToBits(1);
   frame.data[3] = subindex;
-  frame.data[4] = data >> 0;
-  frame.data[5] = data >> 8;
-  frame.data[6] = data >> 16;
-  frame.data[7] = data >> 24;
+  frame.data[4] = data;
+  frame.data[5] = data >> bytesToBits(1);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  frame.data[6] = data >> bytesToBits(2);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  frame.data[7] = data >> bytesToBits(3);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
 
   write(roboteq::canopen_comm::socket_handle_, &frame, sizeof(struct can_frame));
 
@@ -152,15 +152,15 @@ uint32_t canopen_comm::sdo_upload(send_runtime_query query, uint8_t subindex) {
   struct can_frame query_frame {};
 
   query_frame.can_id = sdo_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
-  query_frame.can_dlc = 8;
+  query_frame.can_dlc = CAN_FRAME_SIZE_BYTES;
   query_frame.data[0] = (sdo_query_ << 4) | (canopen_comm::RUNTINE_QUERY_MAP.at(query).number_of_unused_bytes << 2);
   query_frame.data[1] = canopen_comm::RUNTINE_QUERY_MAP.at(query).canopen_index;
-  query_frame.data[2] = canopen_comm::RUNTINE_QUERY_MAP.at(query).canopen_index >> 8;
+  query_frame.data[2] = canopen_comm::RUNTINE_QUERY_MAP.at(query).canopen_index >> bytesToBits(1);
   query_frame.data[3] = subindex;
   query_frame.data[4] = 0;
-  query_frame.data[5] = 0;
-  query_frame.data[6] = 0;
-  query_frame.data[7] = 0;
+  query_frame.data[5] = 0;  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  query_frame.data[6] = 0;  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  query_frame.data[7] = 0;  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
 
   write(roboteq::canopen_comm::socket_handle_, &query_frame, sizeof(struct can_frame));
 
@@ -182,8 +182,14 @@ uint32_t canopen_comm::sdo_upload(send_runtime_query query, uint8_t subindex) {
     // TODO: Throw error
   }
 
-  return (response_frame.data[4] | response_frame.data[5] << 8 | response_frame.data[6] << 16 |
-          response_frame.data[7] << 24);
+  uint32_t response_data{};
+  static constexpr size_t START_OF_DATA_INDEX{4};
+  for (size_t data_index = START_OF_DATA_INDEX; data_index < CAN_FRAME_SIZE_BYTES; data_index++) {
+    response_data |= (response_frame.data[data_index] << (data_index - START_OF_DATA_INDEX));
+  }
+
+  // NOLINTNEXTLINE(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  return (response_data);
 }
 
 }  // namespace roboteq
