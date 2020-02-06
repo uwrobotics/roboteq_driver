@@ -3,16 +3,18 @@
 #include <iostream>
 #include <memory>
 
-#include "i_comm.hpp"
+#include "CommunicationInterface.hpp"
 
 namespace roboteq {
 
-class roboteq_controller {
+class RoboteqController {
  public:
-  explicit roboteq_controller(std::unique_ptr<i_comm>&& comm);
-  roboteq_controller(const roboteq_controller&) = delete;
-  roboteq_controller& operator=(const roboteq_controller&) = delete;
-  ~roboteq_controller() {}
+  explicit RoboteqController(std::unique_ptr<CommunicationInterface>&& comm);
+  RoboteqController(RoboteqController&&) = default;
+  RoboteqController& operator=(RoboteqController&&) = default;
+  RoboteqController(const RoboteqController&) = delete;
+  RoboteqController& operator=(const RoboteqController&) = delete;
+  ~RoboteqController() = default;
 
   // set methods
   bool setMotorCommand(int32_t command, uint8_t channel);
@@ -27,8 +29,8 @@ class roboteq_controller {
   bool setIndividualDigitalOutBits(uint8_t out_bits);
   bool resetIndividualOutBits(uint8_t out_bits);
   bool loadHomeCounter(uint8_t channel);
-  bool emergencyShutdown(void);
-  bool releaseShutdown(void);
+  bool emergencyShutdown();
+  bool releaseShutdown();
   bool stopInAllModes(uint8_t channel);
   bool setPosRelative(int32_t position, uint8_t channel);
   bool setNextPosAbsolute(int32_t position, uint8_t channel);
@@ -37,7 +39,7 @@ class roboteq_controller {
   bool setNextDeceleration(int32_t decel, uint8_t channel);
   bool setNextVelocity(int32_t speed, uint8_t channel);
   bool setUserBoolVariable(uint32_t var, uint8_t nbvar);
-  bool saveConfigToFlash(void);
+  bool saveConfigToFlash();
 
   // read methods
   int16_t readMotorAmps(uint8_t channel);
@@ -54,12 +56,12 @@ class roboteq_controller {
   int16_t readBrushlessMotorSpeedRelativeToMaxSpeed(uint8_t channel);
   int16_t readBatteryAmps(uint8_t channel);
   uint16_t readInternalVoltages(uint8_t param);
-  uint32_t readAllDigitalInputs(void);
+  uint32_t readAllDigitalInputs();
   int8_t readCaseAndInternalTemperatures(uint8_t param);
   int16_t readFeedback(uint8_t channel);
-  uint16_t readStatusFlags(void);
-  uint16_t readFaultFlags(void);
-  uint16_t readCurrentDigitalOutputs(void);
+  uint16_t readStatusFlags();
+  uint16_t readFaultFlags();
+  uint16_t readCurrentDigitalOutputs();
   int32_t readClosedLoopError(uint8_t channel);
   bool readUserBooleanVariable(uint32_t nbvar);
   int32_t readInternalSerialCommand(uint8_t channel);
@@ -69,16 +71,16 @@ class roboteq_controller {
   uint16_t readSpektrumRadioCapture(uint8_t nb_capture);
   uint8_t readDestinationPositionReachedFlag(uint8_t channel);
   int32_t readMEMSAccelerometerAxis(uint8_t axis);
-  uint8_t readMagsensorTrackDetect(void);
+  uint8_t readMagsensorTrackDetect();
   int16_t readMagsensorTrackPosition(uint8_t nb_pulse);
   uint8_t readMagsensorMarkers(uint8_t nb_pulse);
   uint16_t readMagsensorStatus(uint8_t nb_pulse);
   uint16_t readMotorStatusFlags(uint8_t nb_pulse);
 
  private:
-  std::unique_ptr<i_comm> comm_interface_;
+  std::unique_ptr<CommunicationInterface> comm_interface_;
 
-  static constexpr double MOTOR_AMPS_READING_CONVERSION_FACTOR{10.0};
+  static constexpr double MOTOR_AMPS_READING_CONVERSION_FACTOR_{10.0};
 };
 
 }  // namespace roboteq

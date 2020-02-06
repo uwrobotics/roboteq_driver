@@ -4,15 +4,15 @@
 #include <memory>
 #include <thread>
 
-#include "canopen_comm.hpp"
-#include "i_comm.hpp"
-#include "roboteq_controller.hpp"
+#include "CanopenInterface.hpp"
+#include "CommunicationInterface.hpp"
+#include "RoboteqController.hpp"
 
 static constexpr int32_t TEST_SPEED{500};
 
 int main() {
-  std::unique_ptr<roboteq::i_comm> comm = std::make_unique<roboteq::canopen_comm>(0x01, "can0");
-  roboteq::roboteq_controller motor_controller(std::move(comm));
+  std::unique_ptr<roboteq::CommunicationInterface> comm = std::make_unique<roboteq::CanopenInterface>(0x01, "can0");
+  roboteq::RoboteqController motor_controller(std::move(comm));
 
   static constexpr int NUM_DRIVE_JOINTS{2};
   std::array<double, NUM_DRIVE_JOINTS> positions{};

@@ -2,7 +2,7 @@
 
 namespace roboteq {
 
-enum class send_runtime_command {
+enum class RuntimeCommand {
 
   SET_MOTOR_COMMAND = 0,
   SET_POSITION,
@@ -29,7 +29,7 @@ enum class send_runtime_command {
   SAVE_CONFIG_TO_FLASH,
 };
 
-enum class send_runtime_query {
+enum class RuntimeQuery {
 
   READ_MOTOR_AMPS = 0,
   READ_ACTUAL_MOTOR_COMMAND,
@@ -72,15 +72,17 @@ enum class send_runtime_query {
   READ_PULSE_INPUTS_CONVERTED,
 };
 
-class i_comm {
+class CommunicationInterface {
  public:
-  i_comm(){};
-  virtual ~i_comm() {}
+  CommunicationInterface() = default;
+  CommunicationInterface(CommunicationInterface&&) = default;
+  CommunicationInterface& operator=(CommunicationInterface&&) = default;
+  CommunicationInterface(const CommunicationInterface&) = default;
+  CommunicationInterface& operator=(const CommunicationInterface&) = default;
+  virtual ~CommunicationInterface() = default;
 
-  virtual bool sdo_download(send_runtime_command command, uint8_t subindex = 0, uint32_t data = 0) = 0;
-  virtual uint32_t sdo_upload(send_runtime_query query, uint8_t subindex = 0) = 0;
-
- private:
+  virtual bool sdoDownload(RuntimeCommand command, uint8_t subindex = 0, uint32_t data = 0) = 0;
+  virtual uint32_t sdoUpload(RuntimeQuery query, uint8_t subindex = 0) = 0;
 };
 
 }  // namespace roboteq

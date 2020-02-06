@@ -18,8 +18,8 @@ set(CMAKE_CXX_CLANG_TIDY clang-tidy-9)
 include_directories(include)
 
 add_library(${PROJECT_NAME}
-        src/canopen_comm.cpp
-        src/roboteq_controller.cpp)
+        src/CanopenInterface.cpp
+        src/RoboteqController.cpp)
 
 target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Wpedantic -Werror)
 
