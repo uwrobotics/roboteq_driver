@@ -27,7 +27,7 @@ class roboteq_controller {
   bool setIndividualDigitalOutBits(uint8_t out_bits);
   bool resetIndividualOutBits(uint8_t out_bits);
   bool loadHomeCounter(uint8_t channel);
-  bool emergencyShutdown(uint8_t channel);
+  bool emergencyShutdown(void);
   bool releaseShutdown(void);
   bool stopInAllModes(uint8_t channel);
   bool setPosRelative(int32_t position, uint8_t channel);

@@ -1,4 +1,3 @@
-#include <cassert>
 #include <chrono>
 #include <iomanip>
 #include <iostream>
@@ -43,11 +42,21 @@ int main() {
     // write to all joints
     for (int joint_num = 0; joint_num < NUM_DRIVE_JOINTS; joint_num++) {
       bool command_successful = motor_controller.setVelocity(TEST_SPEED, joint_num);
-      assert(command_successful);
+      if (!command_successful) {
+        bool shutdown_successful{false};
+        do {
+          shutdown_successful = motor_controller.emergencyShutdown();
+          std::cout << "Command write failed. Sending ESTOP!" << std::endl;
+        } while (!shutdown_successful);
+        std::cout << "Test FAILED. Aborting program early." << std::endl;
+        return EXIT_FAILURE;
+      }
     }
 
     next_execution_time += EXECUTION_PERIOD;
     std::this_thread::sleep_until(next_execution_time);
   }
-  return 0;
+
+  std::cout << "Test SUCCESS! Program Terminating." << std::endl;
+  return EXIT_SUCCESS;
 }

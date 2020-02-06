@@ -14,7 +14,7 @@
 
 namespace roboteq {
 
-const std::unordered_map<send_runtime_command, command_properties_t> canopen_comm::RUNTIME_COMMAND_MAP = {
+const std::unordered_map<send_runtime_command, command_properties_t> canopen_comm::RUNTIME_COMMAND_MAP_ = {
 
     {send_runtime_command::SET_MOTOR_COMMAND, {0x2000, 0}},
     {send_runtime_command::SET_POSITION, {0x2001, 0}},
@@ -28,7 +28,7 @@ const std::unordered_map<send_runtime_command, command_properties_t> canopen_com
     {send_runtime_command::SET_INDIVIDUAL_DIGITAL_OUT_BITS, {0x2009, 3}},
     {send_runtime_command::RESET_INDIVIDUAL_OUT_BITS, {0x200a, 3}},
     {send_runtime_command::LOAD_HOME_COUNTER, {0x200b, 3}},
-    {send_runtime_command::EMERGENCY_SHUTDOWN, {0x200c, 3}},
+    {send_runtime_command::EMERGENCY_SHUTDOWN, {0x200c, 4}},
     {send_runtime_command::RELEASE_SHUTDOWN, {0x200d, 3}},
     {send_runtime_command::STOP_IN_ALL_MODES, {0x200e, 3}},
     {send_runtime_command::SET_POS_RELATIVE, {0x200f, 3}},
@@ -41,7 +41,7 @@ const std::unordered_map<send_runtime_command, command_properties_t> canopen_com
     {send_runtime_command::SAVE_CONFIG_TO_FLASH, {0x2017, 3}},
 };
 
-const std::unordered_map<send_runtime_query, command_properties_t> canopen_comm::RUNTINE_QUERY_MAP = {
+const std::unordered_map<send_runtime_query, command_properties_t> canopen_comm::RUNTINE_QUERY_MAP_ = {
     {send_runtime_query::READ_MOTOR_AMPS, {0x2100, 2}},
     {send_runtime_query::READ_ACTUAL_MOTOR_COMMAND, {0x2101, 2}},
     {send_runtime_query::READ_ACTUAL_POWER_LEVEL, {0x2102, 2}},
@@ -120,20 +120,23 @@ bool canopen_comm::sdo_download(send_runtime_command command, uint8_t subindex, 
 
   frame.can_id = sdo_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
   frame.can_dlc = CAN_FRAME_SIZE_BYTES;
-  frame.data[0] = (sdo_command_ << 4) | (canopen_comm::RUNTIME_COMMAND_MAP.at(command).number_of_unused_bytes << 2);
-  frame.data[1] = canopen_comm::RUNTIME_COMMAND_MAP.at(command).canopen_index;
-  frame.data[2] = canopen_comm::RUNTIME_COMMAND_MAP.at(command).canopen_index >> bytesToBits(1);
+  frame.data[0] = (sdo_command_ << 4) | (canopen_comm::RUNTIME_COMMAND_MAP_.at(command).number_of_unused_bytes << 2);
+  frame.data[1] = canopen_comm::RUNTIME_COMMAND_MAP_.at(command).canopen_index;
+  frame.data[2] = canopen_comm::RUNTIME_COMMAND_MAP_.at(command).canopen_index >> bytesToBits(1);
   frame.data[3] = subindex;
   frame.data[4] = data;
   frame.data[5] = data >> bytesToBits(1);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
   frame.data[6] = data >> bytesToBits(2);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
   frame.data[7] = data >> bytesToBits(3);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
 
-  write(roboteq::canopen_comm::socket_handle_, &frame, sizeof(struct can_frame));
+  ssize_t bytes_written = write(roboteq::canopen_comm::socket_handle_, &frame, sizeof(struct can_frame));
+  if (bytes_written != sizeof(struct can_frame)) {
+    // TODO: throw error
+    return false;
+  }
 
   struct can_frame response_frame = {};
-
-  uint32_t nbytes = read(roboteq::canopen_comm::socket_handle_, &response_frame, sizeof(struct can_frame));
+  ssize_t bytes_read = read(roboteq::canopen_comm::socket_handle_, &response_frame, sizeof(struct can_frame));
 
   // std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" <<
   // static_cast<unsigned>(response_frame.data[0])
@@ -145,7 +148,11 @@ bool canopen_comm::sdo_download(send_runtime_command command, uint8_t subindex, 
   //                         static_cast<unsigned>(response_frame.data[6])
   //                         << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
 
-  return (nbytes == sizeof(struct can_frame));
+  if (bytes_read != sizeof(struct can_frame)) {
+    // TODO: throw error
+    return false;  // NOLINT(readability-simplify-boolean-expr): temp until error todo is finished
+  }
+  return true;
 }
 
 uint32_t canopen_comm::sdo_upload(send_runtime_query query, uint8_t subindex) {
@@ -153,20 +160,23 @@ uint32_t canopen_comm::sdo_upload(send_runtime_query query, uint8_t subindex) {
 
   query_frame.can_id = sdo_cob_id_offset_ + roboteq::canopen_comm::roboteq_can_id_;
   query_frame.can_dlc = CAN_FRAME_SIZE_BYTES;
-  query_frame.data[0] = (sdo_query_ << 4) | (canopen_comm::RUNTINE_QUERY_MAP.at(query).number_of_unused_bytes << 2);
-  query_frame.data[1] = canopen_comm::RUNTINE_QUERY_MAP.at(query).canopen_index;
-  query_frame.data[2] = canopen_comm::RUNTINE_QUERY_MAP.at(query).canopen_index >> bytesToBits(1);
+  query_frame.data[0] = (sdo_query_ << 4) | (canopen_comm::RUNTINE_QUERY_MAP_.at(query).number_of_unused_bytes << 2);
+  query_frame.data[1] = canopen_comm::RUNTINE_QUERY_MAP_.at(query).canopen_index;
+  query_frame.data[2] = canopen_comm::RUNTINE_QUERY_MAP_.at(query).canopen_index >> bytesToBits(1);
   query_frame.data[3] = subindex;
   query_frame.data[4] = 0;
   query_frame.data[5] = 0;  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
   query_frame.data[6] = 0;  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
   query_frame.data[7] = 0;  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
 
-  write(roboteq::canopen_comm::socket_handle_, &query_frame, sizeof(struct can_frame));
+  ssize_t bytes_written = write(roboteq::canopen_comm::socket_handle_, &query_frame, sizeof(struct can_frame));
+  if (bytes_written != sizeof(struct can_frame)) {
+    // TODO: throw error
+    return 0;
+  }
 
   struct can_frame response_frame = {};
-
-  uint32_t nbytes = read(roboteq::canopen_comm::socket_handle_, &response_frame, sizeof(struct can_frame));
+  ssize_t bytes_read = read(roboteq::canopen_comm::socket_handle_, &response_frame, sizeof(struct can_frame));
 
   // std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" <<
   // static_cast<unsigned>(response_frame.data[0])
@@ -178,8 +188,9 @@ uint32_t canopen_comm::sdo_upload(send_runtime_query query, uint8_t subindex) {
   //                         static_cast<unsigned>(response_frame.data[6])
   //                         << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
 
-  if (nbytes != sizeof(struct can_frame)) {
-    // TODO: Throw error
+  if (bytes_read != sizeof(struct can_frame)) {
+    // TODO: throw error
+    return 0;
   }
 
   uint32_t response_data{};

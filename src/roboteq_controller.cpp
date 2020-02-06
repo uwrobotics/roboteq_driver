@@ -57,8 +57,8 @@ bool roboteq_controller::loadHomeCounter(uint8_t channel) {
   return comm_interface_->sdo_download(roboteq::send_runtime_command::LOAD_HOME_COUNTER, 0, channel);
 }
 
-bool roboteq_controller::emergencyShutdown(uint8_t channel) {
-  return comm_interface_->sdo_download(roboteq::send_runtime_command::EMERGENCY_SHUTDOWN, 0, channel);
+bool roboteq_controller::emergencyShutdown() {
+  return comm_interface_->sdo_download(roboteq::send_runtime_command::EMERGENCY_SHUTDOWN, 0);
 }
 
 bool roboteq_controller::releaseShutdown() {

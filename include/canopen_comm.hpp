@@ -25,8 +25,8 @@ class canopen_comm : public i_comm {
   int roboteq_can_id_;
   int socket_handle_;
 
-  static const std::unordered_map<send_runtime_command, command_properties_t> RUNTIME_COMMAND_MAP;
-  static const std::unordered_map<send_runtime_query, command_properties_t> RUNTINE_QUERY_MAP;
+  static const std::unordered_map<send_runtime_command, command_properties_t> RUNTIME_COMMAND_MAP_;
+  static const std::unordered_map<send_runtime_query, command_properties_t> RUNTINE_QUERY_MAP_;
 
   static constexpr uint16_t sdo_command_{2};
   static constexpr uint16_t sdo_query_{4};
