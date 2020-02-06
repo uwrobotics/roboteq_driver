@@ -8,7 +8,6 @@
 #include "i_comm.hpp"
 #include "roboteq_controller.hpp"
 
-static constexpr double MOTOR_AMPS_READING_CONVERSION_FACTOR{10.0};
 static constexpr int32_t TEST_SPEED{500};
 
 int main() {
@@ -30,7 +29,7 @@ int main() {
     for (int joint_num = 0; joint_num < NUM_DRIVE_JOINTS; joint_num++) {
       positions[joint_num] = motor_controller.readAbsoluteEncoderCount(joint_num);
       velocities[joint_num] = motor_controller.readEncoderMotorSpeed(joint_num);
-      efforts[joint_num] = motor_controller.readMotorAmps(joint_num) / MOTOR_AMPS_READING_CONVERSION_FACTOR;
+      efforts[joint_num] = motor_controller.readMotorAmps(joint_num);
 
       static constexpr int NUMBER_FIELD_WIDTH{5};
       std::cout << std::left << "joint_num: " << std::setw(NUMBER_FIELD_WIDTH) << joint_num

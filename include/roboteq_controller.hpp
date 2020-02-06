@@ -77,6 +77,8 @@ class roboteq_controller {
 
  private:
   std::unique_ptr<i_comm> comm_interface_;
+
+  static constexpr double MOTOR_AMPS_READING_CONVERSION_FACTOR{10.0};
 };
 
 }  // namespace roboteq

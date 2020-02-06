@@ -103,7 +103,8 @@ bool roboteq_controller::saveConfigToFlash() {
 
 // read methods
 int16_t roboteq_controller::readMotorAmps(uint8_t channel) {
-  return static_cast<int16_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_MOTOR_AMPS, channel));
+  return static_cast<int16_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_MOTOR_AMPS, channel)) *
+         MOTOR_AMPS_READING_CONVERSION_FACTOR;
 }
 
 int16_t roboteq_controller::readActualMotorCommand(uint8_t channel) {
@@ -170,7 +171,7 @@ uint16_t roboteq_controller::readInternalVoltages(uint8_t param) {
 }
 
 uint32_t roboteq_controller::readAllDigitalInputs() {
-  return static_cast<uint32_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_ALL_DIGITAL_INPUTS, 0));
+  return static_cast<uint32_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_ALL_DIGITAL_INPUTS));
 }
 
 int8_t roboteq_controller::readCaseAndInternalTemperatures(uint8_t param) {
@@ -183,16 +184,15 @@ int16_t roboteq_controller::readFeedback(uint8_t channel) {
 }
 
 uint16_t roboteq_controller::readStatusFlags() {
-  return static_cast<uint16_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_STATUS_FLAGS, 0));
+  return static_cast<uint16_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_STATUS_FLAGS));
 }
 
 uint16_t roboteq_controller::readFaultFlags() {
-  return static_cast<uint16_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_FAULT_FLAGS, 0));
+  return static_cast<uint16_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_FAULT_FLAGS));
 }
 
 uint16_t roboteq_controller::readCurrentDigitalOutputs() {
-  return static_cast<uint16_t>(
-      comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_CURRENT_DIGITAL_OUTPUTS, 0));
+  return static_cast<uint16_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_CURRENT_DIGITAL_OUTPUTS));
 }
 
 int32_t roboteq_controller::readClosedLoopError(uint8_t channel) {
@@ -239,7 +239,7 @@ int32_t roboteq_controller::readMEMSAccelerometerAxis(uint8_t axis) {
 }
 
 uint8_t roboteq_controller::readMagsensorTrackDetect() {
-  return static_cast<uint8_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_MAGSENSOR_TRACK_DETECT, 0));
+  return static_cast<uint8_t>(comm_interface_->sdo_upload(roboteq::send_runtime_query::READ_MAGSENSOR_TRACK_DETECT));
 }
 
 int16_t roboteq_controller::readMagsensorTrackPosition(uint8_t nb_pulse) {
