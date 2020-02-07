@@ -121,7 +121,8 @@ bool CanopenInterface::sdoDownload(RuntimeCommand command, uint8_t subindex, uin
 
   frame.can_id = sdo_cob_id_offset_ + roboteq::CanopenInterface::roboteq_can_id_;
   frame.can_dlc = CAN_FRAME_SIZE_BYTES_;
-  // frame.data[0] = (sdo_command_ << 4) | (CanopenInterface::RUNTIME_COMMAND_MAP_.at(command).number_of_unused_bytes << 2);
+  // frame.data[0] = (sdo_command_ << 4) | (CanopenInterface::RUNTIME_COMMAND_MAP_.at(command).number_of_unused_bytes <<
+  // 2);
   frame.data[0] = (sdo_command_ << 4) | (0 << 2);
   frame.data[1] = CanopenInterface::RUNTIME_COMMAND_MAP_.at(command).canopen_index;
   frame.data[2] = CanopenInterface::RUNTIME_COMMAND_MAP_.at(command).canopen_index >> bytesToBits(1);
@@ -162,7 +163,8 @@ uint32_t CanopenInterface::sdoUpload(RuntimeQuery query, uint8_t subindex) {
 
   query_frame.can_id = sdo_cob_id_offset_ + roboteq::CanopenInterface::roboteq_can_id_;
   query_frame.can_dlc = CAN_FRAME_SIZE_BYTES_;
-  // query_frame.data[0] = (sdo_query_ << 4) | (CanopenInterface::RUNTINE_QUERY_MAP_.at(query).number_of_unused_bytes << 2);
+  query_frame.data[0] = (sdo_query_ << 4)
+      /*|(CanopenInterface::RUNTINE_QUERY_MAP_.at(query).number_of_unused_bytes << 2)*/;  // TODO: fix
   query_frame.data[0] = (sdo_command_ << 4) | (0 << 2);
   query_frame.data[1] = CanopenInterface::RUNTINE_QUERY_MAP_.at(query).canopen_index;
   query_frame.data[2] = CanopenInterface::RUNTINE_QUERY_MAP_.at(query).canopen_index >> bytesToBits(1);
