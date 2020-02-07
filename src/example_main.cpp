@@ -8,7 +8,7 @@
 #include "CommunicationInterface.hpp"
 #include "RoboteqController.hpp"
 
-static constexpr int32_t TEST_SPEED{500};
+static constexpr int32_t TEST_SPEED{000};
 
 int main() {
   std::unique_ptr<roboteq::CommunicationInterface> comm = std::make_unique<roboteq::CanopenInterface>(0x01, "can0");
