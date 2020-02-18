@@ -3,12 +3,13 @@
 #include <iostream>
 #include <memory>
 #include <thread>
+#include <cassert>
 
 #include "CanopenInterface.hpp"
 #include "CommunicationInterface.hpp"
 #include "RoboteqController.hpp"
 
-static constexpr int32_t TEST_SPEED{000};
+static constexpr int32_t TEST_SPEED{1000};
 
 int main() {
   std::unique_ptr<roboteq::CommunicationInterface> comm = std::make_unique<roboteq::CanopenInterface>(0x01, "can0");
@@ -19,10 +20,15 @@ int main() {
   std::array<double, NUM_DRIVE_JOINTS> velocities{};
   std::array<double, NUM_DRIVE_JOINTS> efforts{};
 
+  bool command_successful = motor_controller.releaseShutdown();
+  if (!command_successful) {
+    std::cout << "Failed to release shutdown.";
+  }
+
   using namespace std::chrono_literals;
   static constexpr auto EXECUTION_PERIOD{1s / 100};  // 100 Hz
   auto start_time = std::chrono::steady_clock::now();
-  auto end_time = start_time + 15s;
+  auto end_time = start_time + 5s;
   auto next_execution_time = start_time;
   while (std::chrono::steady_clock::now() < end_time) {
     // read to all joints
@@ -54,6 +60,14 @@ int main() {
 
     next_execution_time += EXECUTION_PERIOD;
     std::this_thread::sleep_until(next_execution_time);
+  }
+
+  for (int joint_num = 0; joint_num < NUM_DRIVE_JOINTS; joint_num++) {
+    bool success = motor_controller.stopInAllModes(joint_num);
+    assert(success);
+    success = motor_controller.stopInAllModes(joint_num);
+    assert(success);
+    (void)success;
   }
 
   std::cout << "Test SUCCESS! Program Terminating." << std::endl;
