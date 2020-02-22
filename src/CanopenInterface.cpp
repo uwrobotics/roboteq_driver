@@ -18,7 +18,7 @@ const std::unordered_map<RuntimeCommand, command_properties_t> CanopenInterface:
 
     {RuntimeCommand::SET_MOTOR_COMMAND, {0x2000, 0}},
     {RuntimeCommand::SET_POSITION, {0x2001, 0}},
-    {RuntimeCommand::SET_VELOCITY, {0x2002, 2}},
+    {RuntimeCommand::SET_VELOCITY, {0x2002, 0}},
     {RuntimeCommand::SET_ENCODER_COUNTER, {0x2003, 0}},
     {RuntimeCommand::SET_BRUSHLESS_COUNTER, {0x2004, 0}},
     {RuntimeCommand::SET_USER_INT_VARIABLE, {0x2005, 0}},
@@ -121,9 +121,8 @@ bool CanopenInterface::sdoDownload(RuntimeCommand command, uint8_t subindex, uin
 
   frame.can_id = sdo_cob_id_offset_ + roboteq::CanopenInterface::roboteq_can_id_;
   frame.can_dlc = CAN_FRAME_SIZE_BYTES_;
-  // frame.data[0] = (sdo_command_ << 4) | (CanopenInterface::RUNTIME_COMMAND_MAP_.at(command).number_of_unused_bytes <<
-  // 2);
-  frame.data[0] = (sdo_command_ << 4) | (0 << 2);
+  frame.data[0] = (sdo_command_ << 4) | (CanopenInterface::RUNTIME_COMMAND_MAP_.at(command).number_of_unused_bytes <<2);
+  // frame.data[0] = (sdo_command_ << 4) | (0 << 2);
   frame.data[1] = CanopenInterface::RUNTIME_COMMAND_MAP_.at(command).canopen_index;
   frame.data[2] = CanopenInterface::RUNTIME_COMMAND_MAP_.at(command).canopen_index >> bytesToBits(1);
   frame.data[3] = subindex;
@@ -141,15 +140,15 @@ bool CanopenInterface::sdoDownload(RuntimeCommand command, uint8_t subindex, uin
   struct can_frame response_frame = {};
   ssize_t bytes_read = read(roboteq::CanopenInterface::socket_handle_, &response_frame, sizeof(struct can_frame));
 
-  // std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" <<
-  // static_cast<unsigned>(response_frame.data[0])
-  //                         << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" <<
-  //                         static_cast<unsigned>(response_frame.data[2]) << "\t" <<
-  //                         static_cast<unsigned>(response_frame.data[3])
-  //                         << "\t" << static_cast<unsigned>(response_frame.data[4]) << "\t" <<
-  //                         static_cast<unsigned>(response_frame.data[5]) << "\t" <<
-  //                         static_cast<unsigned>(response_frame.data[6])
-  //                         << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
+  std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" <<
+  static_cast<unsigned>(response_frame.data[0])
+                          << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" <<
+                          static_cast<unsigned>(response_frame.data[2]) << "\t" <<
+                          static_cast<unsigned>(response_frame.data[3])
+                          << "\t" << static_cast<unsigned>(response_frame.data[4]) << "\t" <<
+                          static_cast<unsigned>(response_frame.data[5]) << "\t" <<
+                          static_cast<unsigned>(response_frame.data[6])
+                          << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
 
   if (bytes_read != sizeof(struct can_frame)) {
     // TODO: throw error
@@ -163,9 +162,8 @@ uint32_t CanopenInterface::sdoUpload(RuntimeQuery query, uint8_t subindex) {
 
   query_frame.can_id = sdo_cob_id_offset_ + roboteq::CanopenInterface::roboteq_can_id_;
   query_frame.can_dlc = CAN_FRAME_SIZE_BYTES_;
-  query_frame.data[0] = (sdo_query_ << 4)
-      /*|(CanopenInterface::RUNTINE_QUERY_MAP_.at(query).number_of_unused_bytes << 2)*/;  // TODO: fix
-  query_frame.data[0] = (sdo_command_ << 4) | (0 << 2);
+  query_frame.data[0] = (sdo_query_ << 4)  | (CanopenInterface::RUNTINE_QUERY_MAP_.at(query).number_of_unused_bytes << 2);  // TODO: fix
+  // query_frame.data[0] = (sdo_command_ << 4) | (0 << 2);
   query_frame.data[1] = CanopenInterface::RUNTINE_QUERY_MAP_.at(query).canopen_index;
   query_frame.data[2] = CanopenInterface::RUNTINE_QUERY_MAP_.at(query).canopen_index >> bytesToBits(1);
   query_frame.data[3] = subindex;
@@ -183,15 +181,15 @@ uint32_t CanopenInterface::sdoUpload(RuntimeQuery query, uint8_t subindex) {
   struct can_frame response_frame = {};
   ssize_t bytes_read = read(roboteq::CanopenInterface::socket_handle_, &response_frame, sizeof(struct can_frame));
 
-  // std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" <<
-  // static_cast<unsigned>(response_frame.data[0])
-  //                         << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" <<
-  //                         static_cast<unsigned>(response_frame.data[2]) << "\t" <<
-  //                         static_cast<unsigned>(response_frame.data[3])
-  //                         << "\t" << static_cast<unsigned>(response_frame.data[4]) << "\t" <<
-  //                         static_cast<unsigned>(response_frame.data[5]) << "\t" <<
-  //                         static_cast<unsigned>(response_frame.data[6])
-  //                         << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
+  std::cout <<  std::hex << response_frame.can_id << "\t" << static_cast<unsigned>(response_frame.can_dlc) << "\t" <<
+  static_cast<unsigned>(response_frame.data[0])
+                          << "\t" << static_cast<unsigned>(response_frame.data[1]) << "\t" <<
+                          static_cast<unsigned>(response_frame.data[2]) << "\t" <<
+                          static_cast<unsigned>(response_frame.data[3])
+                          << "\t" << static_cast<unsigned>(response_frame.data[4]) << "\t" <<
+                          static_cast<unsigned>(response_frame.data[5]) << "\t" <<
+                          static_cast<unsigned>(response_frame.data[6])
+                          << "\t" << static_cast<unsigned>(response_frame.data[7]) << std::endl;
 
   if (bytes_read != sizeof(struct can_frame)) {
     // TODO: throw error

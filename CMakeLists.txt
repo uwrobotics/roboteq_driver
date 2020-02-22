@@ -21,7 +21,7 @@ add_library(${PROJECT_NAME}
         src/CanopenInterface.cpp
         src/RoboteqController.cpp)
 
-target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Wpedantic -Werror)
+#target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Wpedantic -Werror)
 
 add_executable(roboteq_driver_example_main
         src/example_main.cpp)

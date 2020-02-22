@@ -117,7 +117,7 @@ int16_t RoboteqController::readAppliedPowerLevel(uint8_t channel) {
 }
 
 int32_t RoboteqController::readEncoderMotorSpeed(uint8_t channel) {
-  return static_cast<int32_t>(comm_interface_->sdoUpload(roboteq::RuntimeQuery::READ_ENCODER_MOTOR_SPEED, channel));
+  return reinterpret_cast<int32_t&>(comm_interface_->sdoUpload(roboteq::RuntimeQuery::READ_ENCODER_MOTOR_SPEED, channel));
 }
 
 int32_t RoboteqController::readAbsoluteEncoderCount(uint8_t channel) {
@@ -134,8 +134,7 @@ int32_t RoboteqController::readUserIntegerVariable(int32_t nbvar) {
 }
 
 int16_t RoboteqController::readEncoderMotorSpeedRelativeToMaxSpeed(uint8_t channel) {
-  return static_cast<int16_t>(
-      comm_interface_->sdoUpload(roboteq::RuntimeQuery::READ_ENCODER_MOTOR_SPEED_RELATIVE_TO_MAX_SPEED, channel));
+  return static_cast<int16_t>(comm_interface_->sdoUpload(roboteq::RuntimeQuery::READ_ENCODER_MOTOR_SPEED_RELATIVE_TO_MAX_SPEED, channel));
 }
 
 int32_t RoboteqController::readEncoderCountRelative(uint8_t channel) {
