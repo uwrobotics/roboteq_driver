@@ -80,7 +80,7 @@ class RoboteqController {
  private:
   std::unique_ptr<CanopenInterface> canopen_interface_;
 
-  static constexpr double MOTOR_AMPS_READING_CONVERSION_FACTOR_{10.0};
+  static constexpr double MOTOR_AMPS_READING_CONVERSION_FACTOR{10.0};
 };
 
 }  // namespace roboteq

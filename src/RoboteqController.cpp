@@ -105,7 +105,7 @@ bool RoboteqController::saveConfigToFlash() {
 // read methods
 int16_t RoboteqController::readMotorAmps(uint8_t channel) {
   return canopen_interface_->sendQuery<int16_t>(roboteq::RuntimeQuery::READ_MOTOR_AMPS, channel) *
-         MOTOR_AMPS_READING_CONVERSION_FACTOR_;
+         MOTOR_AMPS_READING_CONVERSION_FACTOR;
 }
 
 int16_t RoboteqController::readActualMotorCommand(uint8_t channel) {

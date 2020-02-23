@@ -8,6 +8,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -99,9 +100,9 @@ CanopenInterface::CanopenInterface(canid_t roboteq_can_id, const std::string& if
 
   std::array<struct can_filter, 2> can_receive_filter{};
 
-  can_receive_filter[0].can_id = SDO_COB_ID_OFFSET_ + roboteq::CanopenInterface::roboteq_can_id_;
+  can_receive_filter[0].can_id = SDO_COB_ID_OFFSET + roboteq::CanopenInterface::roboteq_can_id_;
   can_receive_filter[0].can_mask = (CAN_EFF_FLAG | CAN_RTR_FLAG | CAN_EFF_MASK);
-  can_receive_filter[1].can_id = SDO_RESPONSE_COB_ID_OFFSET_ + roboteq::CanopenInterface::roboteq_can_id_;
+  can_receive_filter[1].can_id = SDO_RESPONSE_COB_ID_OFFSET + roboteq::CanopenInterface::roboteq_can_id_;
   can_receive_filter[1].can_mask = (CAN_EFF_FLAG | CAN_RTR_FLAG | CAN_EFF_MASK);
 
   //   struct timeval receive_timeout = {.tv_usec=500000}; //0.5 seconds
@@ -120,19 +121,19 @@ template <typename DataType>
 bool CanopenInterface::sendCommand(RuntimeCommand command, uint8_t subindex, DataType data) {
   struct can_frame command_frame {};
 
-  command_frame.can_id = SDO_COB_ID_OFFSET_ + roboteq::CanopenInterface::roboteq_can_id_;
-  command_frame.can_dlc = CAN_FRAME_SIZE_BYTES_;
-  command_frame.data[0] = (SDO_COMMAND_ID_ << 4) | ((SDO_MAX_DATA_SIZE_ - sizeof(DataType)) << 2);
+  command_frame.can_id = SDO_COB_ID_OFFSET + roboteq::CanopenInterface::roboteq_can_id_;
+  command_frame.can_dlc = CAN_FRAME_SIZE_BYTES;
+  command_frame.data[0] = (SDO_COMMAND_ID << 4) | ((SDO_MAX_DATA_SIZE - sizeof(DataType)) << 2);
   command_frame.data[1] = CanopenInterface::COMMAND_CANOPEN_ID_MAP_.at(command);
   command_frame.data[2] = CanopenInterface::COMMAND_CANOPEN_ID_MAP_.at(command) >> bytesToBits(1);
   command_frame.data[3] = subindex;
   command_frame.data[4] = data;
-  command_frame.data[5] =
-      data >> bytesToBits(1);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
-  command_frame.data[6] =
-      data >> bytesToBits(2);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
-  command_frame.data[7] =
-      data >> bytesToBits(3);  // NOLINT(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  // NOLINTNEXTLINE(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  command_frame.data[5] = data >> bytesToBits(1);
+  // NOLINTNEXTLINE(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  command_frame.data[6] = data >> bytesToBits(2);
+  // NOLINTNEXTLINE(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
+  command_frame.data[7] = data >> bytesToBits(3);
 
   ssize_t bytes_written = write(roboteq::CanopenInterface::socket_handle_, &command_frame, sizeof(struct can_frame));
   if (bytes_written != sizeof(struct can_frame)) {
@@ -159,8 +160,8 @@ bool CanopenInterface::sendCommand(RuntimeCommand command, uint8_t subindex, Dat
     return false;  // NOLINT(readability-simplify-boolean-expr): temp until error todo is finished
   }
 
-  if ((response_frame.data[0] & (0xFF << 4)) != (SUCCESSFUL_COMMAND_RESPONSE << 4) ||
-      (command_frame.data[0] & (0x3 << 2)) != (response_frame.data[0] & (0x3 << 2)) ||
+  if ((response_frame.data[0] & RESPONSE_TYPE_MASK) != SUCCESSFUL_COMMAND_RESPONSE ||
+      (command_frame.data[0] & UNUSED_BYTES_MASK) != (response_frame.data[0] & UNUSED_BYTES_MASK) ||
       command_frame.data[1] != response_frame.data[1] || command_frame.data[2] != response_frame.data[2] ||
       command_frame.data[3] != response_frame.data[3]) {
     // TODO: throw error about mismatched response
@@ -175,9 +176,9 @@ template <>
 bool CanopenInterface::sendCommand<empty_data_payload>(RuntimeCommand command, uint8_t subindex, empty_data_payload) {
   struct can_frame command_frame {};
 
-  command_frame.can_id = SDO_COB_ID_OFFSET_ + roboteq::CanopenInterface::roboteq_can_id_;
-  command_frame.can_dlc = CAN_FRAME_SIZE_BYTES_;
-  command_frame.data[0] = (SDO_COMMAND_ID_ << 4) | (SDO_MAX_DATA_SIZE_ << 2);
+  command_frame.can_id = SDO_COB_ID_OFFSET + roboteq::CanopenInterface::roboteq_can_id_;
+  command_frame.can_dlc = CAN_FRAME_SIZE_BYTES;
+  command_frame.data[0] = (SDO_COMMAND_ID << 4) | (SDO_MAX_DATA_SIZE << 2);
   command_frame.data[1] = CanopenInterface::COMMAND_CANOPEN_ID_MAP_.at(command);
   command_frame.data[2] = CanopenInterface::COMMAND_CANOPEN_ID_MAP_.at(command) >> bytesToBits(1);
   command_frame.data[3] = subindex;
@@ -211,8 +212,8 @@ bool CanopenInterface::sendCommand<empty_data_payload>(RuntimeCommand command, u
     return false;  // NOLINT(readability-simplify-boolean-expr): temp until error todo is finished
   }
 
-  if ((response_frame.data[0] & (0xFF << 4)) != (SUCCESSFUL_COMMAND_RESPONSE << 4) ||
-      (command_frame.data[0] & (0x3 << 2)) != (response_frame.data[0] & (0x3 << 2)) ||
+  if ((response_frame.data[0] & RESPONSE_TYPE_MASK) != SUCCESSFUL_COMMAND_RESPONSE ||
+      (command_frame.data[0] & UNUSED_BYTES_MASK) != (response_frame.data[0] & UNUSED_BYTES_MASK) ||
       command_frame.data[1] != response_frame.data[1] || command_frame.data[2] != response_frame.data[2] ||
       command_frame.data[3] != response_frame.data[3]) {
     // TODO: throw error about mismatched response
@@ -227,9 +228,9 @@ template <typename DataType>
 DataType CanopenInterface::sendQuery(RuntimeQuery query, uint8_t subindex) {
   struct can_frame query_frame {};
 
-  query_frame.can_id = SDO_COB_ID_OFFSET_ + roboteq::CanopenInterface::roboteq_can_id_;
-  query_frame.can_dlc = CAN_FRAME_SIZE_BYTES_;
-  query_frame.data[0] = (SDO_QUERY_ID_ << 4) | ((SDO_MAX_DATA_SIZE_ - sizeof(DataType)) << 2);
+  query_frame.can_id = SDO_COB_ID_OFFSET + roboteq::CanopenInterface::roboteq_can_id_;
+  query_frame.can_dlc = CAN_FRAME_SIZE_BYTES;
+  query_frame.data[0] = (SDO_QUERY_ID << 4) | ((SDO_MAX_DATA_SIZE - sizeof(DataType)) << 2);
   query_frame.data[1] = CanopenInterface::QUERY_CANOPEN_ID_MAP_.at(query);
   query_frame.data[2] = CanopenInterface::QUERY_CANOPEN_ID_MAP_.at(query) >> bytesToBits(1);
   query_frame.data[3] = subindex;
@@ -263,8 +264,7 @@ DataType CanopenInterface::sendQuery(RuntimeQuery query, uint8_t subindex) {
     return 0;
   }
 
-  if (response_frame.data[0] & (0xFF << 4) != SUCCESSFUL_QUERY_RESPONSE ||
-      query_frame.data[0] & (3 << 2) != response_frame.data[0] & (3 << 2) ||
+  if ((response_frame.data[0] & RESPONSE_TYPE_MASK) != SUCCESSFUL_QUERY_RESPONSE ||
       query_frame.data[1] != response_frame.data[1] || query_frame.data[2] != response_frame.data[2] ||
       query_frame.data[3] != response_frame.data[3]) {
     // TODO: throw error about mismatched response
@@ -272,14 +272,24 @@ DataType CanopenInterface::sendQuery(RuntimeQuery query, uint8_t subindex) {
     return false;  // NOLINT(readability-simplify-boolean-expr): temp until error todo is finished
   }
 
+  const size_t data_response_size = SDO_MAX_DATA_SIZE - ((response_frame.data[0] & UNUSED_BYTES_MASK) >> 2);
+
   uint32_t raw_response_data{};
   static constexpr size_t START_OF_DATA_INDEX{4};
-  for (size_t data_index = START_OF_DATA_INDEX; data_index < START_OF_DATA_INDEX + sizeof(DataType); data_index++) {
-    raw_response_data |= (response_frame.data[data_index] << (data_index - START_OF_DATA_INDEX));
+  for (size_t data_index = START_OF_DATA_INDEX; data_index < START_OF_DATA_INDEX + data_response_size; data_index++) {
+    raw_response_data |= (response_frame.data[data_index] << bytesToBits(data_index - START_OF_DATA_INDEX));
   }
 
+  // Pad unused bytes with 0xFF if negative and signed
+  if (std::is_signed<DataType>() && std::signbit(response_frame.data[START_OF_DATA_INDEX + data_response_size - 1])) {
+    constexpr uint8_t NEGATIVE_PADDING_BYTE = 0xFF;
+    for (size_t byte_number = data_response_size; byte_number < sizeof(uint32_t); byte_number++) {
+      raw_response_data |= NEGATIVE_PADDING_BYTE << bytesToBits(byte_number);
+    }
+  }
+
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
   DataType response_data = reinterpret_cast<DataType&>(raw_response_data);
-  // NOLINTNEXTLINE(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
   return response_data;
 }
 

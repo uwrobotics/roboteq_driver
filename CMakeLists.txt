@@ -12,7 +12,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_BUILD_TYPE "Release")
 
 # Clang Tidy
-# set(CMAKE_CXX_CLANG_TIDY clang-tidy-9)
+set(CMAKE_CXX_CLANG_TIDY clang-tidy-9)
 
 #inlcuding header files
 include_directories(include)
