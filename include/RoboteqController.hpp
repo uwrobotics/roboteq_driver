@@ -3,13 +3,13 @@
 #include <iostream>
 #include <memory>
 
-#include "CommunicationInterface.hpp"
-
+//#include "CommunicationInterface.hpp"
+#include "CanopenInterface.hpp"
 namespace roboteq {
 
 class RoboteqController {
  public:
-  explicit RoboteqController(std::unique_ptr<CommunicationInterface>&& comm);
+  explicit RoboteqController(std::unique_ptr<CanopenInterface>&& comm);
   RoboteqController(RoboteqController&&) = default;
   RoboteqController& operator=(RoboteqController&&) = default;
   RoboteqController(const RoboteqController&) = delete;
@@ -78,7 +78,7 @@ class RoboteqController {
   uint16_t readMotorStatusFlags(uint8_t nb_pulse);
 
  private:
-  std::unique_ptr<CommunicationInterface> comm_interface_;
+  std::unique_ptr<CanopenInterface> canopen_interface_;
 
   static constexpr double MOTOR_AMPS_READING_CONVERSION_FACTOR_{10.0};
 };

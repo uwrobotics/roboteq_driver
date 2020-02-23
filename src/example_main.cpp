@@ -12,7 +12,7 @@
 static constexpr int32_t TEST_SPEED{188};
 
 int main() {
-  std::unique_ptr<roboteq::CommunicationInterface> comm = std::make_unique<roboteq::CanopenInterface>(0x01, "can0");
+  std::unique_ptr<roboteq::CanopenInterface> comm = std::make_unique<roboteq::CanopenInterface>(0x01, "can0");
   roboteq::RoboteqController motor_controller(std::move(comm));
 
   static constexpr int NUM_DRIVE_JOINTS{3};

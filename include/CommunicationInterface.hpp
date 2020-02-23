@@ -3,7 +3,6 @@
 namespace roboteq {
 
 enum class RuntimeCommand {
-
   SET_MOTOR_COMMAND = 0,
   SET_POSITION,
   SET_VELOCITY,
@@ -81,8 +80,8 @@ class CommunicationInterface {
   CommunicationInterface& operator=(const CommunicationInterface&) = default;
   virtual ~CommunicationInterface() = default;
 
-  virtual bool sdoDownload(RuntimeCommand command, uint8_t subindex = 0, uint32_t data = 0) = 0;
-  virtual uint32_t sdoUpload(RuntimeQuery query, uint8_t subindex = 0) = 0;
+//  virtual bool sendCommand(RuntimeCommand command, uint8_t subindex = 0, uint32_t data = 0) = 0;
+//  virtual uint32_t sendQuery(RuntimeQuery query, uint8_t subindex = 0) = 0;
 };
 
 }  // namespace roboteq
