@@ -75,12 +75,10 @@ class RoboteqController {
   int16_t readMagsensorTrackPosition(uint8_t nb_pulse);
   uint8_t readMagsensorMarkers(uint8_t nb_pulse);
   uint16_t readMagsensorStatus(uint8_t nb_pulse);
-  uint16_t readMotorStatusFlags(uint8_t nb_pulse);
+  uint16_t readMotorStatusFlags(uint8_t channel);
 
  private:
   std::unique_ptr<CanopenInterface> canopen_interface_;
-
-  static constexpr double MOTOR_AMPS_READING_CONVERSION_FACTOR{10.0};
 };
 
 }  // namespace roboteq

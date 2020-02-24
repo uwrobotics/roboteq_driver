@@ -33,8 +33,8 @@ class CanopenInterface : public CommunicationInterface {
   int roboteq_can_id_;
   int socket_handle_;
 
-  static const std::unordered_map<RuntimeCommand, uint8_t> COMMAND_CANOPEN_ID_MAP_;
-  static const std::unordered_map<RuntimeQuery, uint8_t> QUERY_CANOPEN_ID_MAP_;
+  static const std::unordered_map<RuntimeCommand, uint16_t> COMMAND_CANOPEN_ID_MAP_;
+  static const std::unordered_map<RuntimeQuery, uint16_t> QUERY_CANOPEN_ID_MAP_;
 
   static constexpr uint16_t SDO_COMMAND_ID{2};
   static constexpr uint16_t SDO_QUERY_ID{4};

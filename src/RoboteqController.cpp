@@ -104,8 +104,7 @@ bool RoboteqController::saveConfigToFlash() {
 
 // read methods
 int16_t RoboteqController::readMotorAmps(uint8_t channel) {
-  return canopen_interface_->sendQuery<int16_t>(roboteq::RuntimeQuery::READ_MOTOR_AMPS, channel) *
-         MOTOR_AMPS_READING_CONVERSION_FACTOR;
+  return canopen_interface_->sendQuery<int16_t>(roboteq::RuntimeQuery::READ_MOTOR_AMPS, channel);
 }
 
 int16_t RoboteqController::readActualMotorCommand(uint8_t channel) {
@@ -238,8 +237,8 @@ uint16_t RoboteqController::readMagsensorStatus(uint8_t nb_pulse) {
   return canopen_interface_->sendQuery<uint16_t>(roboteq::RuntimeQuery::READ_MAGSENSOR_STATUS, nb_pulse);
 }
 
-uint16_t RoboteqController::readMotorStatusFlags(uint8_t nb_pulse) {
-  return canopen_interface_->sendQuery<uint16_t>(roboteq::RuntimeQuery::READ_MOTOR_STATUS_FLAGS, nb_pulse);
+uint16_t RoboteqController::readMotorStatusFlags(uint8_t channel) {
+  return canopen_interface_->sendQuery<uint16_t>(roboteq::RuntimeQuery::READ_MOTOR_STATUS_FLAGS, channel);
 }
 
 }  // namespace roboteq

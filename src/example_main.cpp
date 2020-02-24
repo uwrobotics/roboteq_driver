@@ -1,59 +1,64 @@
+#include <cassert>
 #include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <memory>
 #include <thread>
-#include <cassert>
 
 #include "CanopenInterface.hpp"
 #include "CommunicationInterface.hpp"
 #include "RoboteqController.hpp"
 
-static constexpr int32_t TEST_SPEED{188};
+static constexpr int32_t TEST_SPEED{300};
 
 int main() {
   std::unique_ptr<roboteq::CanopenInterface> comm = std::make_unique<roboteq::CanopenInterface>(0x01, "can0");
   roboteq::RoboteqController motor_controller(std::move(comm));
 
-  static constexpr int NUM_DRIVE_JOINTS{3};
+  static constexpr int NUM_DRIVE_JOINTS{2};
   uint16_t status_flags;
   uint16_t fault_flags;
   // std::array<double, NUM_DRIVE_JOINTS> positions{};
   std::array<double, NUM_DRIVE_JOINTS> velocities{};
   // std::array<double, NUM_DRIVE_JOINTS> efforts{};
 
-  // bool command_successful = motor_controller.releaseShutdown();
-  // if (!command_successful) {
-  //   std::cout << "Failed to release shutdown.";
-  // }
+  bool command_successful = motor_controller.releaseShutdown();
+  if (!command_successful) {
+    std::cout << "Failed to release shutdown.";
+  }
 
   using namespace std::chrono_literals;
-  static constexpr auto EXECUTION_PERIOD{1s / 100};  // 100 Hz
+  static constexpr auto EXECUTION_PERIOD{1s / 10};  // 10 Hz
   auto start_time = std::chrono::steady_clock::now();
   // auto end_time = start_time + 5s;
-  auto next_execution_time = start_time + 3s;
+  auto next_execution_time = start_time + EXECUTION_PERIOD;
 
-    
   // motor_controller.setMotorCommand(TEST_SPEED, 1);
   // motor_controller.setVelocity(TEST_SPEED, 1)
   // velocities[1] = motor_controller.readEncoderMotorSpeed(1);
   //     std::cout << "velocity: " << velocities[1] << std::endl;
 
   // motor_controller.setMotorCommand(-TEST_SPEED, 2);
-  motor_controller.setVelocity(TEST_SPEED, 2);
-  std::this_thread::sleep_until(next_execution_time);
-  velocities[2] = motor_controller.readEncoderMotorSpeed(2);
-      std::cout << "velocity: " << velocities[2] << std::endl;
-  std::this_thread::sleep_until(next_execution_time);
+  //###########################################33
+  while (true) {
+    bool success = motor_controller.setVelocity(TEST_SPEED, 1);
+    std::cout << "setvel success: " << success << std::endl;
+    std::this_thread::sleep_for(1s);
+//    next_execution_time += EXECUTION_PERIOD;
+  }
 
-  status_flags = motor_controller.readStatusFlags();
-      std::cout << "Status Flags: " << status_flags << std::endl;
-
-  fault_flags = motor_controller.readFaultFlags();
-      std::cout << "Fault Flags: " << fault_flags << std::endl;
+  velocities[2] = motor_controller.readEncoderMotorSpeed(1);
+  std::cout << "velocity: " << velocities[1] << std::endl;
+  std::this_thread::sleep_until(next_execution_time);
+  //###################################################
+  //  status_flags = motor_controller.readStatusFlags();
+  //  std::cout << "Status Flags: " << status_flags << std::endl;
+  //
+  //  fault_flags = motor_controller.readFaultFlags();
+  //  std::cout << "Fault Flags: " << fault_flags << std::endl;
 
   // std::this_thread::sleep_until(next_execution_time);
-    
+
   // using namespace std::chrono_literals;
   // static constexpr auto EXECUTION_PERIOD{1s / 100};  // 100 Hz
   // auto start_time = std::chrono::steady_clock::now();
@@ -93,19 +98,19 @@ int main() {
   // }
 
   // // write to all joints
-    for (int joint_num = 0; joint_num < NUM_DRIVE_JOINTS; joint_num++) {
-      motor_controller.setMotorCommand(0, joint_num);
-      bool command_successful = motor_controller.setVelocity(0, joint_num);
-      if (!command_successful) {
-        bool shutdown_successful{false};
-        do {
-          shutdown_successful = motor_controller.emergencyShutdown();
-          std::cout << "Command write failed. Sending ESTOP!" << std::endl;
-        } while (!shutdown_successful);
-        std::cout << "Test FAILED. Aborting program early." << std::endl;
-        return EXIT_FAILURE;
-      }
+  for (int joint_num = 1; joint_num <= NUM_DRIVE_JOINTS; joint_num++) {
+    std::cout << "set motor command 0 on joint#" << joint_num << std::endl;
+    bool command_successful = motor_controller.setVelocity(0, joint_num);
+    if (!command_successful) {
+      bool shutdown_successful{false};
+      //      do {
+      std::cout << "Command write failed. Sending ESTOP!" << std::endl;
+      shutdown_successful = motor_controller.emergencyShutdown();
+      //      } while (!shutdown_successful);
+      std::cout << "Test FAILED. Aborting program early." << std::endl;
+      return EXIT_FAILURE;
     }
+  }
 
   // motor_controller.stopInAllModes(1);
   // motor_controller.stopInAllModes(2);
