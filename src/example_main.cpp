@@ -44,7 +44,7 @@ int main() {
     bool success = motor_controller.setVelocity(TEST_SPEED, 1);
     std::cout << "setvel success: " << success << std::endl;
     std::this_thread::sleep_for(1s);
-//    next_execution_time += EXECUTION_PERIOD;
+    //    next_execution_time += EXECUTION_PERIOD;
   }
 
   velocities[2] = motor_controller.readEncoderMotorSpeed(1);
