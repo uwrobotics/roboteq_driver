@@ -108,9 +108,8 @@ CanopenInterface::CanopenInterface(canid_t roboteq_can_id, const std::string& if
   //   struct timeval receive_timeout = {.tv_usec=500000}; //0.5 seconds
   // setsockopt(socket_handle_, SOL_SOCKET, SO_RCVTIMEO, &receive_timeout, sizeof(receive_timeout));
 
-  int socket_opt_ret_val =
-      setsockopt(socket_handle_, SOL_CAN_RAW, CAN_RAW_FILTER, can_receive_filter.data(),
-                 can_receive_filter.size() * sizeof(struct can_filter));
+  int socket_opt_ret_val = setsockopt(socket_handle_, SOL_CAN_RAW, CAN_RAW_FILTER, can_receive_filter.data(),
+                                      can_receive_filter.size() * sizeof(struct can_filter));
   if (socket_opt_ret_val != 0) {
     throw - 1;
   }
@@ -184,6 +183,7 @@ bool CanopenInterface::sendCommand(RuntimeCommand command, uint8_t subindex, Dat
 template <>
 bool CanopenInterface::sendCommand<empty_data_payload>(RuntimeCommand command, uint8_t subindex, empty_data_payload) {
   struct can_frame command_frame {};
+
   std::cout << "no data SPECIAL" << std::endl;
   command_frame.can_id = SDO_COB_ID_OFFSET + roboteq::CanopenInterface::roboteq_can_id_;
   command_frame.can_dlc = CAN_FRAME_SIZE_BYTES;
